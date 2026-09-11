@@ -1,21 +1,10 @@
-import express from 'express';
-import dotenv from 'dotenv';
-dotenv.config()
+import app from "./app.js";
+import dotenv from "dotenv";
 
-// server instance //
-const server = express();
-const port = process.env.PORT;
+dotenv.config();
 
-// Middleware//
-server.use(express.json());
+const PORT = process.env.PORT;
 
-// routes//
-server.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to my authentication page!"
-  });
-})
-
-server.listen(port, () => {
-  console.log(`Server is running on port http://localhost:${port}`);
-})
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
