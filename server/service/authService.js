@@ -125,11 +125,30 @@ export const refreshAccessToken = async (tokenInput) => {
   };
 };
 
-export const logoutUser = async (tokenInput) => {
-  if (tokenInput) {
-    await deleteRefreshToken(tokenInput);
+export const logoutUser = async (param) => {
+  if (typeof param === "string") {
+    await deleteRefreshToken(param);
+    return;
+  }
+
+  if (param && typeof param === "object") {
+    const { tokenInput, userId, allDevices } = param;
+    if (allDevices && userId) {
+      await deleteUserRefreshTokens(userId);
+      return;
+    }
+    if (tokenInput) {
+      await deleteRefreshToken(tokenInput);
+    }
   }
 };
+
+export const logoutAllSessions = async (userId) => {
+  if (userId) {
+    await deleteUserRefreshTokens(userId);
+  }
+};
+
 
 export const changeUserPassword = async ({
   userId,

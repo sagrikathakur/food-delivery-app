@@ -16,8 +16,17 @@ const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
+  path: "/",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
+
+const CLEAR_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  path: "/",
+};
+
 
 export const login = async (req, res, next) => {
   try {
@@ -75,16 +84,40 @@ export const logout = async (req, res, next) => {
           .find((row) => row.startsWith("refreshToken="))
           ?.split("=")[1]);
 
-    await authService.logoutUser(tokenInput);
+    const allDevices = Boolean(req.body?.allDevices || req.query?.allDevices === "true");
+    const userId = req.user?.id;
+
+    await authService.logoutUser({
+      tokenInput,
+      userId,
+      allDevices,
+    });
 
     // Clear refresh token cookie
-    res.clearCookie("refreshToken", COOKIE_OPTIONS);
+    res.clearCookie("refreshToken", CLEAR_COOKIE_OPTIONS);
 
-    res.status(200).json({ message: "Logout successful" });
+    res.status(200).json({
+      message: allDevices ? "Logged out from all devices successfully" : "Logout successful",
+    });
   } catch (error) {
     next(error);
   }
 };
+
+export const logoutAll = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    await authService.logoutAllSessions(userId);
+
+    // Clear refresh token cookie
+    res.clearCookie("refreshToken", CLEAR_COOKIE_OPTIONS);
+
+    res.status(200).json({ message: "Logged out from all devices successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 export const changePassword = async (req, res, next) => {
