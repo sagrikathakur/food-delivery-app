@@ -6,6 +6,8 @@ import {
   logoutAllUser,
   refreshToken as refreshTokenService,
   getCurrentUser,
+  forgotPassword as forgotPasswordService,
+  resetPassword as resetPasswordService,
 } from '../services/authService'
 
 const AuthContext = createContext(null)
@@ -62,6 +64,26 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const forgotPassword = async (email) => {
+    setError(null)
+    try {
+      return await forgotPasswordService(email)
+    } catch (err) {
+      setError(err.message)
+      throw err
+    }
+  }
+
+  const resetPassword = async (token, newPassword) => {
+    setError(null)
+    try {
+      return await resetPasswordService(token, newPassword)
+    } catch (err) {
+      setError(err.message)
+      throw err
+    }
+  }
+
   const logout = async () => {
     try {
       await logoutUser()
@@ -93,6 +115,8 @@ export const AuthProvider = ({ children }) => {
     error,
     login,
     register,
+    forgotPassword,
+    resetPassword,
     logout,
     logoutAll,
     clearError: () => setError(null),

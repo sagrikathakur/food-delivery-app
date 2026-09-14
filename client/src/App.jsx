@@ -7,6 +7,17 @@ import AuthModal from './components/AuthModal'
 const AppContent = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState('login')
+  const [initialResetToken, setInitialResetToken] = useState('')
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+    if (token) {
+      setInitialResetToken(token)
+      setModalMode('reset')
+      setModalOpen(true)
+    }
+  }, [])
 
   const handleOpenAuthModal = (mode = 'login') => {
     setModalMode(mode)
@@ -21,6 +32,7 @@ const AppContent = () => {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         initialMode={modalMode}
+        initialToken={initialResetToken}
       />
     </div>
   )

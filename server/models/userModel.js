@@ -104,6 +104,54 @@ export const deleteUser = async (id) => {
   return result.rows[0] || null;
 };
 
+// Save password reset token and expiration
+export const savePasswordResetToken = async (userId, hashedToken, expiresAt) => {
+  const result = await pool.query(
+    `
+    UPDATE users
+    SET
+      reset_password_token = $1,
+      reset_password_expires = $2,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $3
+    RETURNING id, email, reset_password_expires;
+    `,
+    [hashedToken, expiresAt, userId]
+  );
+  return result.rows[0] || null;
+};
+
+// Find user by reset password token and verify expiration
+export const findUserByResetToken = async (hashedToken) => {
+  const result = await pool.query(
+    `
+    SELECT *
+    FROM users
+    WHERE reset_password_token = $1
+      AND reset_password_expires > CURRENT_TIMESTAMP;
+    `,
+    [hashedToken]
+  );
+  return result.rows[0] || null;
+};
+
+// Clear password reset token and expiration
+export const clearPasswordResetToken = async (userId) => {
+  const result = await pool.query(
+    `
+    UPDATE users
+    SET
+      reset_password_token = NULL,
+      reset_password_expires = NULL,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $1
+    RETURNING id;
+    `,
+    [userId]
+  );
+  return result.rows[0] || null;
+};
+
 // Backward-compatibility aliases
 export const createUserModel = createUser;
 export const findUserByEmailModel = findUserByEmail;

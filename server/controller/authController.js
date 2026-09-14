@@ -132,3 +132,25 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const result = await authService.requestPasswordReset(req.body.email);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const result = await authService.resetPasswordWithToken({
+      token: req.body.token,
+      newPassword: req.body.newPassword,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+

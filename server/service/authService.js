@@ -1,10 +1,15 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
+import { sendPasswordResetEmail } from "../utils/email.js";
 
 import {
   createUser,
   findUserByEmail,
   findUserByIdWithPassword,
   updatePassword,
+  savePasswordResetToken,
+  findUserByResetToken,
+  clearPasswordResetToken,
 } from "../models/userModel.js";
 
 import {
@@ -180,4 +185,74 @@ export const changeUserPassword = async ({
   await deleteUserRefreshTokens(userId);
 
   return updatePassword(userId, passwordHash);
-};
+};
+
+export const requestPasswordReset = async (email) => {
+  const user = await findUserByEmail(email);
+
+  // Return generic response even if email is not found to prevent user enumeration attacks
+  if (!user || !user.is_active) {
+    return {
+      message: "If an account with that email exists, password reset instructions have been sent to your email address.",
+    };
+  }
+
+  // Generate cryptographically secure random token
+  const rawToken = crypto.randomBytes(32).toString("hex");
+
+  // Hash token for database storage (SHA-256)
+  const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
+
+  // Set token expiration to 15 minutes
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+  // Store token hash in user record
+  await savePasswordResetToken(user.id, hashedToken, expiresAt);
+
+  // Send production password reset email (via SMTP or simulated stdout log)
+  await sendPasswordResetEmail({
+    to: user.email,
+    resetToken: rawToken,
+  });
+
+  return {
+    message: "If an account with that email exists, password reset instructions have been sent to your email address.",
+  };
+};
+
+export const resetPasswordWithToken = async ({ token, newPassword }) => {
+  if (!token) {
+    const error = new Error("Reset token is required");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Hash incoming token to match database hash
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  // Find user by reset token and check expiration
+  const user = await findUserByResetToken(hashedToken);
+
+  if (!user) {
+    const error = new Error("Invalid or expired password reset token");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Hash new password
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+
+  // Update password
+  await updatePassword(user.id, passwordHash);
+
+  // Clear reset token state (single-use enforcement)
+  await clearPasswordResetToken(user.id);
+
+  // Invalidate all active sessions for security
+  await deleteUserRefreshTokens(user.id);
+
+  return {
+    message: "Password reset successfully",
+  };
+};
+
