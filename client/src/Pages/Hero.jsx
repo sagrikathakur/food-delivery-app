@@ -32,15 +32,9 @@ const Hero = ({ onOpenAuthModal }) => {
         </p>
 
         {/* Buttons */}
-        <div className="pt-3 flex justify-center items-center gap-4">
-          <button className="px-8 py-3 bg-white hover:bg-stone-100 text-stone-900 text-xs font-medium uppercase tracking-widest transition-colors rounded-md shadow-sm">
+        <div className="pt-3 flex justify-center items-center">
+          <button className="px-8 py-3.5 bg-white hover:bg-stone-100 text-stone-900 text-xs font-medium uppercase tracking-widest transition-colors rounded-md shadow-sm">
             Shop Collection
-          </button>
-          <button
-            onClick={() => onOpenAuthModal && onOpenAuthModal('login')}
-            className="px-8 py-3 bg-stone-900/80 hover:bg-stone-900 text-white border border-stone-400/50 text-xs font-medium uppercase tracking-widest transition-colors rounded-md"
-          >
-            Sign In
           </button>
         </div>
       </div>
