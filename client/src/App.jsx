@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
+import Hero from './Pages/Hero'
 import AuthModal from './components/AuthModal'
 
 const AppContent = () => {
@@ -25,9 +25,24 @@ const AppContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Navbar onOpenAuthModal={handleOpenAuthModal} />
-      <Hero onOpenAuthModal={handleOpenAuthModal} />
+    <div className="min-h-screen bg-slate-50 bg-mesh-pattern text-slate-900 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+      <div>
+        <Navbar onOpenAuthModal={handleOpenAuthModal} />
+        <main>
+          <Hero onOpenAuthModal={handleOpenAuthModal} />
+        </main>
+      </div>
+
+      <footer className="border-t border-slate-200/80 bg-white/60 backdrop-blur-sm py-6 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="font-semibold text-slate-700">NexusAuth System Active</span>
+          </div>
+          <p>© 2026 NexusAuth Platform. Built for security, speed, and elegance.</p>
+        </div>
+      </footer>
+
       <AuthModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
