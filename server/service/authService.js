@@ -41,6 +41,34 @@ export const registerUser = async ({ name, email, password, phone }) => {
     email,
     passwordHash,
     phone,
+    role: "user",
+  });
+};
+
+export const registerAdmin = async ({ name, email, password, phone, adminSecret }) => {
+  const expectedSecret = process.env.ADMIN_SECRET || "admin123";
+  if (adminSecret && adminSecret !== expectedSecret) {
+    const error = new Error("Invalid admin secret key");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  const existingUser = await findUserByEmail(email);
+
+  if (existingUser) {
+    const error = new Error("Email already registered");
+    error.statusCode = 409;
+    throw error;
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+
+  return createUser({
+    name,
+    email,
+    passwordHash,
+    phone,
+    role: "admin",
   });
 };
 
