@@ -459,7 +459,3 @@ The API includes:
 
 This project is licensed under the MIT License.
 
-```
-
-This version is suitable as the **initial README for your GitHub portfolio project**. You can later add screenshots, database ER diagrams and a deployed API URL once those parts actually exist, rather than documenting imaginary infrastructure like a particularly optimistic startup.
-```
