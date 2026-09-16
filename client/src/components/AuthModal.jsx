@@ -13,6 +13,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
     phone: '',
     resetToken: initialToken,
     newPassword: '',
+    confirmPassword: '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -35,6 +36,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
     e.preventDefault()
     setError('')
     setSuccessMsg('')
+
+    if (mode === 'reset' && formData.newPassword !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -50,7 +57,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
         const res = await forgotPassword(formData.email)
         setSuccessMsg(res.message || 'Password reset link sent.')
       } else if (mode === 'reset') {
-        const res = await resetPassword(formData.resetToken, formData.newPassword)
+        const res = await resetPassword(formData.resetToken, formData.newPassword, formData.confirmPassword)
         setSuccessMsg(res.message || 'Password updated! Please sign in.')
         setMode('login')
       }
@@ -163,6 +170,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
                   <input
                     type="email"
                     name="email"
+                    autoComplete="email"
                     required
                     value={formData.email}
                     onChange={handleChange}
@@ -192,6 +200,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
                     <input
                       type={showPassword ? 'text' : 'password'}
                       name="password"
+                      autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                       required
                       minLength={6}
                       value={formData.password}
@@ -266,6 +275,22 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
                         {showPassword ? 'Hide' : 'Show'}
                       </button>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-stone-700 mb-1">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="confirmPassword"
+                      required
+                      minLength={6}
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="••••••••"
+                      className="w-full pl-3 pr-9 py-2 bg-stone-50/50 border border-stone-200 rounded-lg text-xs text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-800 transition-all placeholder:text-stone-400"
+                    />
                   </div>
                 </>
               )}

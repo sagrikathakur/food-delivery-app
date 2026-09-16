@@ -12,18 +12,6 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const registerAdmin = async (req, res, next) => {
-  try {
-    const adminUser = await authService.registerAdmin(req.body);
-    res.status(201).json({
-      message: "Admin registered successfully",
-      data: adminUser,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
@@ -158,6 +146,7 @@ export const resetPassword = async (req, res, next) => {
     const result = await authService.resetPasswordWithToken({
       token: req.body.token,
       newPassword: req.body.newPassword,
+      confirmPassword: req.body.confirmPassword,
     });
     res.status(200).json(result);
   } catch (error) {

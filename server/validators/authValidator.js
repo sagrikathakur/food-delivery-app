@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const strongPasswordSchema = z
   .string()
-  .min(6, "Must be at least 6 characters")
+  .min(6, "Password must be at least 6 characters")
   .regex(/[A-Z]/, "Requires an uppercase letter")
   .regex(/[a-z]/, "Requires a lowercase letter")
   .regex(/[0-9]/, "Requires a number")
@@ -13,14 +13,6 @@ export const registerSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: strongPasswordSchema,
   phone: z.string().optional(),
-});
-
-export const registerAdminSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email format"),
-  password: strongPasswordSchema,
-  phone: z.string().optional(),
-  adminSecret: z.string().optional(),
 });
 
 export const loginSchema = z.object({
@@ -41,17 +33,37 @@ export const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email format"),
 });
 
-export const resetPasswordSchema = z.object({
-  token: z.string().min(1, "Reset token is required"),
-  newPassword: strongPasswordSchema,
-});
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().min(1, "Reset token is required"),
+    newPassword: strongPasswordSchema,
+    confirmPassword: z.string().optional(),
+  })
+  .refine(
+    (data) => !data.confirmPassword || data.newPassword === data.confirmPassword,
+    {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }
+  );
 
-export const changePasswordSchema = z.object({
-  currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: strongPasswordSchema,
-});
-
-
-
-
-
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: strongPasswordSchema,
+    confirmPassword: z.string().optional(),
+  })
+  .refine(
+    (data) => !data.confirmPassword || data.newPassword === data.confirmPassword,
+    {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }
+  )
+  .refine(
+    (data) => data.currentPassword !== data.newPassword,
+    {
+      message: "New password cannot be the same as your current password",
+      path: ["newPassword"],
+    }
+  );

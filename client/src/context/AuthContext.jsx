@@ -56,7 +56,6 @@ export const AuthProvider = ({ children }) => {
     setError(null)
     try {
       const res = await registerUser(userData)
-      // Automatically log in after registration or prompt login
       return res
     } catch (err) {
       setError(err.message)
@@ -74,10 +73,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const resetPassword = async (token, newPassword) => {
+  const resetPassword = async (token, newPassword, confirmPassword) => {
     setError(null)
     try {
-      return await resetPasswordService(token, newPassword)
+      return await resetPasswordService(token, newPassword, confirmPassword)
     } catch (err) {
       setError(err.message)
       throw err

@@ -36,41 +36,21 @@ export const registerUser = async ({ name, email, password, phone }) => {
 
   const passwordHash = await bcrypt.hash(password, 12);
 
-  return createUser({
-    name,
-    email,
-    passwordHash,
-    phone,
-    role: "user",
-  });
-};
-
-export const registerAdmin = async ({ name, email, password, phone, adminSecret }) => {
-  const expectedSecret = process.env.ADMIN_SECRET || "admin123";
-  if (adminSecret && adminSecret !== expectedSecret) {
-    const error = new Error("Invalid admin secret key");
-    error.statusCode = 403;
-    throw error;
-  }
-
-  const existingUser = await findUserByEmail(email);
-
-  if (existingUser) {
-    const error = new Error("Email already registered");
-    error.statusCode = 409;
-    throw error;
-  }
-
-  const passwordHash = await bcrypt.hash(password, 12);
+  // Determine role based on ADMIN_EMAILS in environment
+  const adminEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : [];
+  const role = adminEmails.includes(email.trim().toLowerCase()) ? "admin" : "user";
 
   return createUser({
     name,
     email,
     passwordHash,
     phone,
-    role: "admin",
+    role,
   });
 };
+
 
 export const loginUser = async ({ email, password }) => {
   const user = await findUserByEmail(email);
@@ -207,6 +187,12 @@ export const changeUserPassword = async ({
     throw error;
   }
 
+  if (currentPassword === newPassword) {
+    const error = new Error("New password cannot be the same as your current password");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const passwordHash = await bcrypt.hash(newPassword, 12);
 
   // Invalidate existing sessions on password change
@@ -248,9 +234,15 @@ export const requestPasswordReset = async (email) => {
   };
 };
 
-export const resetPasswordWithToken = async ({ token, newPassword }) => {
+export const resetPasswordWithToken = async ({ token, newPassword, confirmPassword }) => {
   if (!token) {
     const error = new Error("Reset token is required");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (confirmPassword && newPassword !== confirmPassword) {
+    const error = new Error("Passwords do not match");
     error.statusCode = 400;
     throw error;
   }
@@ -263,6 +255,14 @@ export const resetPasswordWithToken = async ({ token, newPassword }) => {
 
   if (!user) {
     const error = new Error("Invalid or expired password reset token");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Prevent reusing current password
+  const isSamePassword = await bcrypt.compare(newPassword, user.password_hash);
+  if (isSamePassword) {
+    const error = new Error("New password cannot be the same as your current password");
     error.statusCode = 400;
     throw error;
   }

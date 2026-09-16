@@ -152,6 +152,67 @@ export const clearPasswordResetToken = async (userId) => {
   return result.rows[0] || null;
 };
 
+// Admin helper functions
+export const getAllUsers = async () => {
+  const result = await pool.query(
+    `
+    SELECT id, name, email, phone, role, is_active, created_at, updated_at
+    FROM users
+    ORDER BY created_at DESC;
+    `
+  );
+  return result.rows;
+};
+
+export const updateUserRole = async (id, role) => {
+  const result = await pool.query(
+    `
+    UPDATE users
+    SET role = $1, updated_at = CURRENT_TIMESTAMP
+    WHERE id = $2
+    RETURNING id, name, email, role;
+    `,
+    [role, id]
+  );
+  return result.rows[0] || null;
+};
+
+export const updateUserStatus = async (id, isActive) => {
+  const result = await pool.query(
+    `
+    UPDATE users
+    SET is_active = $1, updated_at = CURRENT_TIMESTAMP
+    WHERE id = $2
+    RETURNING id, name, email, is_active;
+    `,
+    [isActive, id]
+  );
+  return result.rows[0] || null;
+};
+
+export const getSystemStats = async () => {
+  const userStats = await pool.query(
+    `
+    SELECT
+      COUNT(*)::int as total_users,
+      COUNT(CASE WHEN role = 'admin' THEN 1 END)::int as total_admins,
+      COUNT(CASE WHEN is_active = true THEN 1 END)::int as active_users
+    FROM users;
+    `
+  );
+
+  const tokenStats = await pool.query(
+    `
+    SELECT COUNT(*)::int as active_sessions FROM refresh_tokens WHERE expires_at > CURRENT_TIMESTAMP;
+    `
+  );
+
+  return {
+    ...userStats.rows[0],
+    ...tokenStats.rows[0],
+  };
+};
+
 // Backward-compatibility aliases
 export const createUserModel = createUser;
 export const findUserByEmailModel = findUserByEmail;

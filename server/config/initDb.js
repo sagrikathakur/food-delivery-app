@@ -1,8 +1,11 @@
 import pool from "./database.js";
 
+/**
+ * Initializes database tables and schemas
+ */
 export const initDb = async () => {
   try {
-    // Create users table
+    // 1. Create users table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -17,14 +20,14 @@ export const initDb = async () => {
       );
     `);
 
-    // Add password reset columns to users table if not exists
+    // 2. Add password reset columns to users table if missing
     await pool.query(`
       ALTER TABLE users
       ADD COLUMN IF NOT EXISTS reset_password_token VARCHAR(255),
       ADD COLUMN IF NOT EXISTS reset_password_expires TIMESTAMP WITH TIME ZONE;
     `);
 
-    // Create refresh_tokens table
+    // 3. Create refresh_tokens table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS refresh_tokens (
         id SERIAL PRIMARY KEY,
@@ -35,7 +38,7 @@ export const initDb = async () => {
       );
     `);
 
-    console.log("Database tables verified/created successfully.");
+    console.log("Database schema initialized successfully.");
   } catch (error) {
     console.error("Database initialization error:", error);
   }
