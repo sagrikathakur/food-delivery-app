@@ -3,6 +3,7 @@ import { authorize, authorizeAdmin } from "./authorize.js";
 import { validate } from "./validateMiddleware.js";
 import { auditLogger } from "./auditLogger.js";
 import { notFoundHandler, errorHandler } from "./errorMiddleware.js";
+import { authLimiter, apiLimiter } from "./rateLimiter.js";
 
 export {
   authenticate,
@@ -13,4 +14,6 @@ export {
   auditLogger,
   notFoundHandler,
   errorHandler,
+  authLimiter,
+  apiLimiter,
 };

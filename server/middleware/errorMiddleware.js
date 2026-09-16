@@ -1,14 +1,16 @@
-// 404 Not Found Handler
 export const notFoundHandler = (req, res) => {
-  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
+  });
 };
 
-// Global Error Handler
 export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Something went wrong";
+  const message = err.message || "Internal Server Error";
 
   res.status(statusCode).json({
+    success: false,
     message,
     ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
