@@ -3,7 +3,7 @@ import {
   updateUserRole,
   updateUserStatus,
   getSystemStats,
-} from "../models/userModel.js";
+} from "../models/adminModel.js";
 
 // Fetch all registered users
 export const fetchAllUsers = async (req, res, next) => {
