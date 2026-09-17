@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import CartSidebar from './components/CartSidebar'
 import AuthModal from './components/AuthModal'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import Hero from './Pages/Hero'
 import Fragrances from './Pages/Fragrances'
@@ -13,6 +14,8 @@ import OrderTrackingPage from './Pages/OrderTrackingPage'
 import ProfilePage from './Pages/ProfilePage'
 import AdminDashboard from './Pages/AdminDashboard'
 
+const PROTECTED_VIEWS = ['checkout', 'tracking', 'profile', 'admin']
+
 const AppContent = () => {
   const { user } = useAuth()
   const [currentView, setCurrentView] = useState('home')
@@ -22,24 +25,7 @@ const AppContent = () => {
 
   // Shopping Bag / Cart State
   const [cartOpen, setCartOpen] = useState(false)
-  const [cartItems, setCartItems] = useState([
-    {
-      id: '1',
-      name: 'Oceanic Breeze Eau de Parfum',
-      size: '100 ml',
-      price: 135.00,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=300',
-    },
-    {
-      id: '2',
-      name: 'Velvet Amber & Vanilla',
-      size: '50 ml',
-      price: 95.00,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=300',
-    },
-  ])
+  const [cartItems, setCartItems] = useState([])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -50,6 +36,13 @@ const AppContent = () => {
       setModalOpen(true)
     }
   }, [])
+
+  // Clear cart when user logs out
+  useEffect(() => {
+    if (!user) {
+      setCartItems([])
+    }
+  }, [user])
 
   // Auto switch view to admin if admin user logs in initially
   useEffect(() => {
@@ -63,27 +56,51 @@ const AppContent = () => {
     setModalOpen(true)
   }
 
+  const handleNavigate = (view) => {
+    if (!user && PROTECTED_VIEWS.includes(view)) {
+      handleOpenAuthModal('login')
+      return
+    }
+    setCurrentView(view)
+  }
+
+  const handleOpenCart = () => {
+    if (!user) {
+      handleOpenAuthModal('login')
+      return
+    }
+    setCartOpen(true)
+  }
+
   const handleAddToCart = (product) => {
+    if (!user) {
+      handleOpenAuthModal('login')
+      return false
+    }
+
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id)
+      const existing = prev.find((item) => item.id === product.id || item.name === product.name)
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === existing.id || item.name === product.name
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         )
       }
       return [
         ...prev,
         {
-          id: product.id,
+          id: product.id || `item_${Date.now()}`,
           name: product.name,
           size: product.size || '100 ml',
-          price: product.price,
+          price: Number(product.price) || 0,
           quantity: 1,
           image: product.image,
         },
       ]
     })
     setCartOpen(true)
+    return true
   }
 
   const handleUpdateQuantity = (id, newQty) => {
@@ -102,6 +119,10 @@ const AppContent = () => {
 
   const handleCheckoutClick = () => {
     setCartOpen(false)
+    if (!user) {
+      handleOpenAuthModal('login')
+      return
+    }
     setCurrentView('checkout')
   }
 
@@ -118,25 +139,55 @@ const AppContent = () => {
         <Navbar
           onOpenAuthModal={handleOpenAuthModal}
           currentView={currentView}
-          onNavigate={(view) => setCurrentView(view)}
+          onNavigate={handleNavigate}
           cartCount={totalCartCount}
-          onOpenCart={() => setCartOpen(true)}
+          onOpenCart={handleOpenCart}
           transparent={currentView === 'home'}
         />
 
         <main>
-          {currentView === 'home' && <Hero onOpenAuthModal={handleOpenAuthModal} />}
+          {currentView === 'home' && (
+            <Hero onOpenAuthModal={handleOpenAuthModal} onNavigate={handleNavigate} />
+          )}
           {currentView === 'fragrances' && <Fragrances onAddToCart={handleAddToCart} />}
           {currentView === 'collections' && <Collections onAddToCart={handleAddToCart} />}
           {currentView === 'about' && <About />}
           {currentView === 'checkout' && (
-            <CheckoutPage cartItems={cartItems} onOrderCompleted={handleOrderCompleted} />
+            <ProtectedRoute
+              onOpenAuthModal={handleOpenAuthModal}
+              title="Secure Checkout"
+              description="Sign in to complete your order and save your shipping addresses."
+            >
+              <CheckoutPage cartItems={cartItems} onOrderCompleted={handleOrderCompleted} />
+            </ProtectedRoute>
           )}
           {currentView === 'tracking' && (
-            <OrderTrackingPage onContinueShopping={() => setCurrentView('fragrances')} />
+            <ProtectedRoute
+              onOpenAuthModal={handleOpenAuthModal}
+              title="Order Tracking"
+              description="View live tracking updates for your recent fragrance purchases."
+            >
+              <OrderTrackingPage onContinueShopping={() => handleNavigate('fragrances')} />
+            </ProtectedRoute>
           )}
-          {currentView === 'profile' && <ProfilePage onOpenAuthModal={handleOpenAuthModal} />}
-          {currentView === 'admin' && <AdminDashboard onOpenAuthModal={handleOpenAuthModal} />}
+          {currentView === 'profile' && (
+            <ProtectedRoute
+              onOpenAuthModal={handleOpenAuthModal}
+              title="Member Profile & Addresses"
+              description="Manage your account profile, saved delivery addresses, and preferences."
+            >
+              <ProfilePage onOpenAuthModal={handleOpenAuthModal} />
+            </ProtectedRoute>
+          )}
+          {currentView === 'admin' && (
+            <ProtectedRoute
+              onOpenAuthModal={handleOpenAuthModal}
+              title="Admin Dashboard"
+              description="Administrator access required."
+            >
+              <AdminDashboard onOpenAuthModal={handleOpenAuthModal} />
+            </ProtectedRoute>
+          )}
         </main>
       </div>
 
@@ -150,16 +201,16 @@ const AppContent = () => {
           </div>
 
           <div className="flex items-center gap-6 text-[11px] font-medium text-stone-600">
-            <button onClick={() => setCurrentView('fragrances')} className="hover:text-amber-800">
+            <button onClick={() => handleNavigate('fragrances')} className="hover:text-amber-800 cursor-pointer">
               Fragrances
             </button>
-            <button onClick={() => setCurrentView('collections')} className="hover:text-amber-800">
+            <button onClick={() => handleNavigate('collections')} className="hover:text-amber-800 cursor-pointer">
               Collections
             </button>
-            <button onClick={() => setCurrentView('about')} className="hover:text-amber-800">
+            <button onClick={() => handleNavigate('about')} className="hover:text-amber-800 cursor-pointer">
               About Us
             </button>
-            <button onClick={() => setCurrentView('profile')} className="hover:text-amber-800">
+            <button onClick={() => handleNavigate('profile')} className="hover:text-amber-800 cursor-pointer">
               My Profile
             </button>
           </div>
@@ -176,6 +227,8 @@ const AppContent = () => {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveCartItem}
         onCheckout={handleCheckoutClick}
+        onOpenAuthModal={handleOpenAuthModal}
+        user={user}
       />
 
       {/* Authentication Modal */}

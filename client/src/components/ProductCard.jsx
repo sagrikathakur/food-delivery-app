@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ProductCard = ({
   product = {
@@ -15,6 +15,21 @@ const ProductCard = ({
   },
   onAddToCart,
 }) => {
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    if (onAddToCart) {
+      const success = onAddToCart(product);
+      if (success !== false) {
+        setIsAdded(true);
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 1500);
+      }
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-md hover:border-stone-300 transition-all duration-300 group flex flex-col justify-between">
       
@@ -55,13 +70,15 @@ const ProductCard = ({
           </h3>
 
           {/* Key Fragrance Notes */}
-          <p className="text-xs text-stone-500 line-clamp-1 mt-1 font-light italic">
-            Notes: {product.notes}
-          </p>
+          {product.notes && (
+            <p className="text-xs text-stone-500 line-clamp-1 mt-1 font-light italic">
+              Notes: {product.notes}
+            </p>
+          )}
 
           {/* Rating */}
           <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-xs font-medium text-amber-600">★ {product.rating}</span>
+            <span className="text-xs font-medium text-amber-600">★ {product.rating || 4.9}</span>
             {product.reviewsCount && (
               <span className="text-xs text-stone-400">({product.reviewsCount} reviews)</span>
             )}
@@ -73,16 +90,20 @@ const ProductCard = ({
           <div>
             <span className="text-[10px] uppercase tracking-wider text-stone-400 block">Price</span>
             <span className="text-base font-serif font-bold text-stone-900">
-              ${product.price ? product.price.toFixed(2) : '0.00'}
+              ${product.price ? Number(product.price).toFixed(2) : '0.00'}
             </span>
           </div>
 
           <button
-            onClick={() => onAddToCart && onAddToCart(product)}
+            onClick={handleAdd}
             type="button"
-            className="px-4 py-2 bg-stone-900 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-wider rounded-md transition-colors shadow-xs active:scale-95"
+            className={`px-4 py-2 font-medium text-xs uppercase tracking-wider rounded-md transition-all shadow-xs active:scale-95 cursor-pointer ${
+              isAdded
+                ? 'bg-emerald-700 text-white'
+                : 'bg-stone-900 hover:bg-amber-900 text-white'
+            }`}
           >
-            Add to Cart
+            {isAdded ? '✓ Added' : 'Add to Cart'}
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import perfumeHeroImg from '../assets/Perfume and Wildflowers.png'
 
-const Hero = ({ onOpenAuthModal }) => {
+const Hero = ({ onOpenAuthModal, onNavigate }) => {
   return (
     <section className="relative w-full h-[90vh] min-h-[550px] overflow-hidden flex items-center justify-center text-white">
       {/* Background Image spanning 100% width and height */}
@@ -32,9 +32,18 @@ const Hero = ({ onOpenAuthModal }) => {
         </p>
 
         {/* Buttons */}
-        <div className="pt-3 flex justify-center items-center">
-          <button className="px-8 py-3.5 bg-white hover:bg-stone-100 text-stone-900 text-xs font-medium uppercase tracking-widest transition-colors rounded-md shadow-sm">
-            Shop Collection
+        <div className="pt-3 flex justify-center items-center gap-4">
+          <button
+            onClick={() => onNavigate && onNavigate('fragrances')}
+            className="px-8 py-3.5 bg-white hover:bg-stone-100 text-stone-900 text-xs font-medium uppercase tracking-widest transition-colors rounded-md shadow-sm cursor-pointer"
+          >
+            Explore Fragrances
+          </button>
+          <button
+            onClick={() => onNavigate && onNavigate('collections')}
+            className="px-8 py-3.5 bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-xs text-xs font-medium uppercase tracking-widest transition-colors rounded-md cursor-pointer"
+          >
+            Collections
           </button>
         </div>
       </div>
