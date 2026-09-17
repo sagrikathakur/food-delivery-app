@@ -1,15 +1,17 @@
-
 import pool from "../config/database.js";
 
 // Create a new user
-export const createUser = async ({
-  name,
-  email,
-  passwordHash,
-  phone = null,
-  role = "user",
-}) => {
-  const query = `
+export const createUser = async (data) => {
+  const {
+    name,
+    email,
+    passwordHash,
+    phone = null,
+    role = "user",
+  } = data;
+
+  const result = await pool.query(
+    `
     INSERT INTO users (
       name,
       email,
@@ -27,22 +29,18 @@ export const createUser = async ({
       is_active,
       created_at,
       updated_at;
-  `;
+    `,
+    [name, email, passwordHash, phone, role]
+  );
 
-  const { rows } = await pool.query(query, [
-    name,
-    email,
-    passwordHash,
-    phone,
-    role,
-  ]);
-
-  return rows[0];
+  return result.rows[0];
 };
 
-// Find user by email for authentication
+
+// Find user by email for login
 export const findUserByEmailForAuth = async (email) => {
-  const query = `
+  const result = await pool.query(
+    `
     SELECT
       id,
       name,
@@ -53,16 +51,18 @@ export const findUserByEmailForAuth = async (email) => {
       is_active
     FROM users
     WHERE email = $1;
-  `;
+    `,
+    [email]
+  );
 
-  const { rows } = await pool.query(query, [email]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Find user by ID
 export const findUserById = async (id) => {
-  const query = `
+  const result = await pool.query(
+    `
     SELECT
       id,
       name,
@@ -74,16 +74,18 @@ export const findUserById = async (id) => {
       updated_at
     FROM users
     WHERE id = $1;
-  `;
+    `,
+    [id]
+  );
 
-  const { rows } = await pool.query(query, [id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Find user by ID for authentication
 export const findUserByIdForAuth = async (id) => {
-  const query = `
+  const result = await pool.query(
+    `
     SELECT
       id,
       name,
@@ -94,16 +96,20 @@ export const findUserByIdForAuth = async (id) => {
       is_active
     FROM users
     WHERE id = $1;
-  `;
+    `,
+    [id]
+  );
 
-  const { rows } = await pool.query(query, [id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
 
+
 // Update user profile
-export const updateUser = async (id, { name, phone }) => {
-  const query = `
+export const updateUser = async (id, data) => {
+  const { name, phone } = data;
+
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       name = COALESCE($1, name),
@@ -119,16 +125,18 @@ export const updateUser = async (id, { name, phone }) => {
       is_active,
       created_at,
       updated_at;
-  `;
+    `,
+    [name, phone, id]
+  );
 
-  const { rows } = await pool.query(query, [name, phone, id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Update user password
 export const updatePassword = async (id, passwordHash) => {
-  const query = `
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       password_hash = $1,
@@ -140,25 +148,28 @@ export const updatePassword = async (id, passwordHash) => {
       email,
       role,
       updated_at;
-  `;
+    `,
+    [passwordHash, id]
+  );
 
-  const { rows } = await pool.query(query, [passwordHash, id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Delete user's own account
 export const deleteUser = async (id) => {
-  const query = `
+  const result = await pool.query(
+    `
     DELETE FROM users
     WHERE id = $1
     RETURNING id;
-  `;
+    `,
+    [id]
+  );
 
-  const { rows } = await pool.query(query, [id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Save password reset token
 export const savePasswordResetToken = async (
@@ -166,7 +177,8 @@ export const savePasswordResetToken = async (
   hashedToken,
   expiresAt
 ) => {
-  const query = `
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       reset_password_token = $1,
@@ -177,20 +189,18 @@ export const savePasswordResetToken = async (
       id,
       email,
       reset_password_expires;
-  `;
+    `,
+    [hashedToken, expiresAt, userId]
+  );
 
-  const { rows } = await pool.query(query, [
-    hashedToken,
-    expiresAt,
-    userId,
-  ]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Find user by valid password reset token
 export const findUserByResetToken = async (hashedToken) => {
-  const query = `
+  const result = await pool.query(
+    `
     SELECT
       id,
       email,
@@ -198,16 +208,18 @@ export const findUserByResetToken = async (hashedToken) => {
     FROM users
     WHERE reset_password_token = $1
       AND reset_password_expires > CURRENT_TIMESTAMP;
-  `;
+    `,
+    [hashedToken]
+  );
 
-  const { rows } = await pool.query(query, [hashedToken]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Clear password reset token
 export const clearPasswordResetToken = async (userId) => {
-  const query = `
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       reset_password_token = NULL,
@@ -215,9 +227,13 @@ export const clearPasswordResetToken = async (userId) => {
       updated_at = CURRENT_TIMESTAMP
     WHERE id = $1
     RETURNING id;
-  `;
+    `,
+    [userId]
+  );
 
-  const { rows } = await pool.query(query, [userId]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
+// Aliases for compatibility
+export const findUserByEmail = findUserByEmailForAuth;
+export const findUserByIdWithPassword = findUserByIdForAuth;

@@ -1,23 +1,20 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendPasswordResetEmail } from "../utils/email.js";
-
 import {
   createUser,
-  findUserByEmail,
-  findUserByIdWithPassword,
+  findUserByEmailForAuth,
+  findUserByIdForAuth,
   updatePassword,
   savePasswordResetToken,
   findUserByResetToken,
   clearPasswordResetToken,
 } from "../models/userModel.js";
-
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwt.js";
-
 import {
   createRefreshToken,
   findRefreshToken,
@@ -25,9 +22,9 @@ import {
   deleteUserRefreshTokens,
 } from "../models/refreshTokenModel.js";
 
+// Register new user
 export const registerUser = async ({ name, email, password, phone, role }) => {
-  const existingUser = await findUserByEmail(email);
-
+  const existingUser = await findUserByEmailForAuth(email);
   if (existingUser) {
     const error = new Error("Email already registered");
     error.statusCode = 409;
@@ -35,26 +32,17 @@ export const registerUser = async ({ name, email, password, phone, role }) => {
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
-
-  // Determine role based on ADMIN_EMAILS in environment if role is not explicitly provided
   const adminEmails = process.env.ADMIN_EMAILS
     ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
     : [];
   const finalRole = role || (adminEmails.includes(email.trim().toLowerCase()) ? "admin" : "user");
 
-  return createUser({
-    name,
-    email,
-    passwordHash,
-    phone,
-    role: finalRole,
-  });
+  return createUser({ name, email, passwordHash, phone, role: finalRole });
 };
 
-
+// Login user and issue tokens
 export const loginUser = async ({ email, password }) => {
-  const user = await findUserByEmail(email);
-
+  const user = await findUserByEmailForAuth(email);
   if (!user || !(await bcrypt.compare(password, user.password_hash))) {
     const error = new Error("Invalid email or password");
     error.statusCode = 401;
@@ -71,7 +59,6 @@ export const loginUser = async ({ email, password }) => {
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
 
-  // Store refresh token in database (expires in 7 days)
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   await createRefreshToken(user.id, refreshToken, expiresAt);
 
@@ -85,10 +72,11 @@ export const loginUser = async ({ email, password }) => {
     },
     accessToken,
     refreshToken,
-    token: accessToken, // Backward compatibility alias
+    token: accessToken,
   };
 };
 
+// Refresh access token with token rotation
 export const refreshAccessToken = async (tokenInput) => {
   let decoded;
   try {
@@ -99,21 +87,14 @@ export const refreshAccessToken = async (tokenInput) => {
     throw error;
   }
 
-  // Check if refresh token exists in database
   const storedToken = await findRefreshToken(tokenInput);
   if (!storedToken) {
-    // Potential Token Reuse / Compromise Detected!
-    // Invalidate ALL refresh tokens for this user for security
-    if (decoded && decoded.id) {
-      await deleteUserRefreshTokens(decoded.id);
-    }
-    const error = new Error("Token reuse detected or token revoked. All sessions invalidated for security.");
+    if (decoded?.id) await deleteUserRefreshTokens(decoded.id);
+    const error = new Error("Token reuse detected. All sessions revoked for security.");
     error.statusCode = 401;
     throw error;
   }
 
-
-  // Check DB expiration
   if (new Date() > new Date(storedToken.expires_at)) {
     await deleteRefreshToken(tokenInput);
     const error = new Error("Refresh token expired");
@@ -121,10 +102,8 @@ export const refreshAccessToken = async (tokenInput) => {
     throw error;
   }
 
-  // Token Rotation: invalidate old refresh token
   await deleteRefreshToken(tokenInput);
 
-  // Issue new access and refresh token pair
   const payload = { id: decoded.id, role: decoded.role };
   const newAccessToken = generateAccessToken(payload);
   const newRefreshToken = generateRefreshToken(payload);
@@ -132,12 +111,10 @@ export const refreshAccessToken = async (tokenInput) => {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   await createRefreshToken(decoded.id, newRefreshToken, expiresAt);
 
-  return {
-    accessToken: newAccessToken,
-    refreshToken: newRefreshToken,
-  };
+  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 };
 
+// Logout single session or all sessions
 export const logoutUser = async (param) => {
   if (typeof param === "string") {
     await deleteRefreshToken(param);
@@ -157,30 +134,19 @@ export const logoutUser = async (param) => {
 };
 
 export const logoutAllSessions = async (userId) => {
-  if (userId) {
-    await deleteUserRefreshTokens(userId);
-  }
+  if (userId) await deleteUserRefreshTokens(userId);
 };
 
-
-export const changeUserPassword = async ({
-  userId,
-  currentPassword,
-  newPassword,
-}) => {
-  const user = await findUserByIdWithPassword(userId);
-
+// Change password for logged-in user
+export const changeUserPassword = async ({ userId, currentPassword, newPassword }) => {
+  const user = await findUserByIdForAuth(userId);
   if (!user) {
     const error = new Error("User not found");
     error.statusCode = 404;
     throw error;
   }
 
-  const validPassword = await bcrypt.compare(
-    currentPassword,
-    user.password_hash
-  );
-
+  const validPassword = await bcrypt.compare(currentPassword, user.password_hash);
   if (!validPassword) {
     const error = new Error("Current password is incorrect");
     error.statusCode = 401;
@@ -194,46 +160,28 @@ export const changeUserPassword = async ({
   }
 
   const passwordHash = await bcrypt.hash(newPassword, 12);
-
-  // Invalidate existing sessions on password change
   await deleteUserRefreshTokens(userId);
-
   return updatePassword(userId, passwordHash);
 };
 
+// Request password reset email
 export const requestPasswordReset = async (email) => {
-  const user = await findUserByEmail(email);
+  const user = await findUserByEmailForAuth(email);
+  const genericMsg = { message: "If an account with that email exists, password reset instructions have been sent." };
 
-  // Return generic response even if email is not found to prevent user enumeration attacks
-  if (!user || !user.is_active) {
-    return {
-      message: "If an account with that email exists, password reset instructions have been sent to your email address.",
-    };
-  }
+  if (!user || !user.is_active) return genericMsg;
 
-  // Generate cryptographically secure random token
   const rawToken = crypto.randomBytes(32).toString("hex");
-
-  // Hash token for database storage (SHA-256)
   const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
-
-  // Set token expiration to 15 minutes
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
-  // Store token hash in user record
   await savePasswordResetToken(user.id, hashedToken, expiresAt);
+  await sendPasswordResetEmail({ to: user.email, resetToken: rawToken });
 
-  // Send production password reset email (via SMTP or simulated stdout log)
-  await sendPasswordResetEmail({
-    to: user.email,
-    resetToken: rawToken,
-  });
-
-  return {
-    message: "If an account with that email exists, password reset instructions have been sent to your email address.",
-  };
+  return genericMsg;
 };
 
+// Reset password using token
 export const resetPasswordWithToken = async ({ token, newPassword, confirmPassword }) => {
   if (!token) {
     const error = new Error("Reset token is required");
@@ -247,19 +195,14 @@ export const resetPasswordWithToken = async ({ token, newPassword, confirmPasswo
     throw error;
   }
 
-  // Hash incoming token to match database hash
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-
-  // Find user by reset token and check expiration
   const user = await findUserByResetToken(hashedToken);
-
   if (!user) {
     const error = new Error("Invalid or expired password reset token");
     error.statusCode = 400;
     throw error;
   }
 
-  // Prevent reusing current password
   const isSamePassword = await bcrypt.compare(newPassword, user.password_hash);
   if (isSamePassword) {
     const error = new Error("New password cannot be the same as your current password");
@@ -267,20 +210,10 @@ export const resetPasswordWithToken = async ({ token, newPassword, confirmPasswo
     throw error;
   }
 
-  // Hash new password
   const passwordHash = await bcrypt.hash(newPassword, 12);
-
-  // Update password
   await updatePassword(user.id, passwordHash);
-
-  // Clear reset token state (single-use enforcement)
   await clearPasswordResetToken(user.id);
-
-  // Invalidate all active sessions for security
   await deleteUserRefreshTokens(user.id);
 
-  return {
-    message: "Password reset successfully",
-  };
+  return { message: "Password reset successfully" };
 };
-
