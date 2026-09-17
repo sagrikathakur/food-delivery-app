@@ -1,9 +1,9 @@
-
 import pool from "../config/database.js";
 
 // Get all users
 export const getAllUsers = async () => {
-  const query = `
+  const result = await pool.query(
+    `
     SELECT
       id,
       name,
@@ -15,16 +15,17 @@ export const getAllUsers = async () => {
       updated_at
     FROM users
     ORDER BY created_at DESC;
-  `;
+    `
+  );
 
-  const { rows } = await pool.query(query);
-
-  return rows;
+  return result.rows;
 };
+
 
 // Update a user's role
 export const updateUserRole = async (id, role) => {
-  const query = `
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       role = $1,
@@ -35,16 +36,18 @@ export const updateUserRole = async (id, role) => {
       name,
       email,
       role;
-  `;
+    `,
+    [role, id]
+  );
 
-  const { rows } = await pool.query(query, [role, id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Update a user's active status
 export const updateUserStatus = async (id, isActive) => {
-  const query = `
+  const result = await pool.query(
+    `
     UPDATE users
     SET
       is_active = $1,
@@ -55,53 +58,55 @@ export const updateUserStatus = async (id, isActive) => {
       name,
       email,
       is_active;
-  `;
+    `,
+    [isActive, id]
+  );
 
-  const { rows } = await pool.query(query, [isActive, id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Delete a user as an admin
 export const deleteUserByAdmin = async (id) => {
-  const query = `
+  const result = await pool.query(
+    `
     DELETE FROM users
     WHERE id = $1
     RETURNING
       id,
       name,
       email;
-  `;
+    `,
+    [id]
+  );
 
-  const { rows } = await pool.query(query, [id]);
-
-  return rows[0] || null;
+  return result.rows[0] || null;
 };
+
 
 // Get system statistics
 export const getSystemStats = async () => {
-  const userStatsQuery = `
+  const userStatsResult = await pool.query(
+    `
     SELECT
       COUNT(*)::int AS total_users,
       COUNT(*) FILTER (WHERE role = 'admin')::int AS total_admins,
       COUNT(*) FILTER (WHERE is_active = true)::int AS active_users
     FROM users;
-  `;
+    `
+  );
 
-  const sessionStatsQuery = `
+  const sessionStatsResult = await pool.query(
+    `
     SELECT
       COUNT(*)::int AS active_sessions
     FROM refresh_tokens
     WHERE expires_at > CURRENT_TIMESTAMP;
-  `;
-
-  const [userStats, sessionStats] = await Promise.all([
-    pool.query(userStatsQuery),
-    pool.query(sessionStatsQuery),
-  ]);
+    `
+  );
 
   return {
-    ...userStats.rows[0],
-    ...sessionStats.rows[0],
+    ...userStatsResult.rows[0],
+    ...sessionStatsResult.rows[0],
   };
 };
