@@ -14,14 +14,24 @@ export const authenticate = async (req, res, next) => {
   try {
     let token;
 
+    // Helper to extract cookies from request header if req.cookies is not pre-populated
+    const cookies = req.cookies || (req.headers.cookie
+      ? Object.fromEntries(
+          req.headers.cookie.split("; ").map((cookie) => {
+            const [key, ...v] = cookie.split("=");
+            return [key, v.join("=")];
+          })
+        )
+      : {});
+
     // 1. Extract Bearer Token from Authorization Header or Cookies
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer ")
     ) {
       token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies && req.cookies.accessToken) {
-      token = req.cookies.accessToken;
+    } else if (cookies.accessToken) {
+      token = cookies.accessToken;
     }
 
     if (!token) {

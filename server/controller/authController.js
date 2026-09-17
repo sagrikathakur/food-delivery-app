@@ -12,6 +12,21 @@ export const register = async (req, res, next) => {
   }
 };
 
+export const registerAdmin = async (req, res, next) => {
+  try {
+    const user = await authService.registerUser({
+      ...req.body,
+      role: "admin",
+    });
+    res.status(201).json({
+      message: "Admin account registered successfully",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",

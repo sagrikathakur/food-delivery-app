@@ -38,6 +38,25 @@ export const initDb = async () => {
       );
     `);
 
+    // 4. Create addresses table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS addresses (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        full_name VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        address_line1 VARCHAR(255) NOT NULL,
+        address_line2 VARCHAR(255),
+        city VARCHAR(100) NOT NULL,
+        state VARCHAR(100) NOT NULL,
+        postal_code VARCHAR(20) NOT NULL,
+        country VARCHAR(100) DEFAULT 'India',
+        is_default BOOLEAN DEFAULT false,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
     console.log("Database schema initialized successfully.");
   } catch (error) {
     console.error("Database initialization error:", error);

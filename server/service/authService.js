@@ -25,7 +25,7 @@ import {
   deleteUserRefreshTokens,
 } from "../models/refreshTokenModel.js";
 
-export const registerUser = async ({ name, email, password, phone }) => {
+export const registerUser = async ({ name, email, password, phone, role }) => {
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
@@ -36,18 +36,18 @@ export const registerUser = async ({ name, email, password, phone }) => {
 
   const passwordHash = await bcrypt.hash(password, 12);
 
-  // Determine role based on ADMIN_EMAILS in environment
+  // Determine role based on ADMIN_EMAILS in environment if role is not explicitly provided
   const adminEmails = process.env.ADMIN_EMAILS
     ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
     : [];
-  const role = adminEmails.includes(email.trim().toLowerCase()) ? "admin" : "user";
+  const finalRole = role || (adminEmails.includes(email.trim().toLowerCase()) ? "admin" : "user");
 
   return createUser({
     name,
     email,
     passwordHash,
     phone,
-    role,
+    role: finalRole,
   });
 };
 
