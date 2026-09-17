@@ -1,211 +1,147 @@
-import React, { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-const Navbar = ({ onOpenAuthModal, currentView, onNavigate }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { user, logout } = useAuth()
+const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 2, onOpenCart }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth ? useAuth() : { user: null, logout: () => {} };
 
-  // Extract user initials
   const getInitials = (nameOrEmail = '') => {
-    if (!nameOrEmail) return 'U'
-    const parts = nameOrEmail.trim().split(' ')
+    if (!nameOrEmail) return 'U';
+    const parts = nameOrEmail.trim().split(' ');
     if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase()
+      return (parts[0][0] + parts[1][0]).toUpperCase();
     }
-    return nameOrEmail.substring(0, 2).toUpperCase()
-  }
+    return nameOrEmail.substring(0, 2).toUpperCase();
+  };
 
   return (
-    <nav className="absolute top-0 left-0 w-full z-40 bg-transparent transition-all text-white border-b border-white/15">
+    <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/80 transition-all text-stone-800 shadow-xs">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-center h-20">
           {/* Brand Logo */}
           <a
             href="/"
             onClick={(e) => {
-              e.preventDefault()
-              if (onNavigate) onNavigate('home')
+              e.preventDefault();
+              if (onNavigate) onNavigate('home');
             }}
             className="flex items-center gap-2 group"
           >
-            <span className="text-xl font-serif tracking-wider text-white uppercase">
+            <span className="text-xl font-serif tracking-wider text-stone-900 uppercase">
               Ocean
-              <span className="text-xs tracking-widest text-stone-300 uppercase font-sans font-light">
+              <span className="text-xs tracking-widest text-amber-700 uppercase font-sans font-light ml-1">
                 Parfums
               </span>
             </span>
           </a>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8 text-xs tracking-widest font-medium uppercase text-stone-200">
+          <div className="hidden md:flex items-center gap-8 text-xs tracking-widest font-medium uppercase text-stone-600">
             <a
               href="#fragrances"
-              onClick={() => onNavigate && onNavigate('home')}
-              className="hover:text-white transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('home');
+              }}
+              className="hover:text-amber-800 transition-colors"
             >
               Fragrances
             </a>
             <a
               href="#collections"
-              onClick={() => onNavigate && onNavigate('home')}
-              className="hover:text-white transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('home');
+              }}
+              className="hover:text-amber-800 transition-colors"
             >
               Collections
             </a>
             <a
               href="#about"
-              onClick={() => onNavigate && onNavigate('home')}
-              className="hover:text-white transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('home');
+              }}
+              className="hover:text-amber-800 transition-colors"
             >
               About Us
             </a>
-
-            {/* Admin Panel Link if User is Admin */}
-            {user?.role === 'admin' && (
-              <button
-                onClick={() => onNavigate && onNavigate(currentView === 'admin' ? 'home' : 'admin')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold transition-all border ${
-                  currentView === 'admin'
-                    ? 'bg-white text-stone-900 border-white'
-                    : 'bg-white/10 hover:bg-white/20 border-white/30 text-white'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>{currentView === 'admin' ? 'View Store' : 'Admin Panel'}</span>
-              </button>
-            )}
           </div>
 
-          {/* Single Action Button & User Info */}
-          <div className="hidden md:flex items-center gap-4">
-            {user ? (
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
-                  <span className="w-5 h-5 rounded-full bg-white text-stone-900 flex items-center justify-center text-[10px] font-bold">
-                    {getInitials(user.name || user.email)}
-                  </span>
-                  <span className="text-xs font-medium text-white">
-                    {user.name || user.email.split('@')[0]}
-                  </span>
-                </div>
+          {/* Right Action Icons: Cart & Profile */}
+          <div className="flex items-center gap-4">
+            {/* Cart Icon */}
+            <button
+              onClick={onOpenCart}
+              type="button"
+              className="relative p-2 text-stone-700 hover:text-amber-800 transition-colors"
+              title="Shopping Bag"
+            >
+              <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-amber-700 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
 
+            {/* Auth / Account */}
+            {user ? (
+              <div className="flex items-center gap-3 pl-3 border-l border-stone-200">
+                <div className="w-8 h-8 rounded-full bg-stone-100 text-amber-800 font-serif font-bold text-xs flex items-center justify-center border border-amber-200">
+                  {getInitials(user.name || user.email)}
+                </div>
                 <button
                   onClick={logout}
-                  className="text-xs tracking-wider uppercase font-medium text-white bg-white/10 hover:bg-white/20 px-4 py-2 transition-colors border border-white/30 rounded-md"
+                  className="text-xs text-stone-500 hover:text-stone-800 transition-colors"
+                  type="button"
                 >
-                  Sign Out
+                  Logout
                 </button>
               </div>
             ) : (
               <button
-                onClick={() => onOpenAuthModal('login')}
-                className="text-xs tracking-widest uppercase font-medium text-stone-900 bg-white hover:bg-stone-100 px-5 py-2.5 transition-all rounded-md shadow-sm"
+                onClick={() => onOpenAuthModal && onOpenAuthModal('login')}
+                type="button"
+                className="px-5 py-2.5 bg-stone-900 hover:bg-amber-900 text-white text-xs font-medium uppercase tracking-widest rounded-md transition-all shadow-xs"
               >
                 Sign In
               </button>
             )}
-          </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-white hover:bg-white/10 transition-colors rounded-md"
-            aria-label="Toggle menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden border-t border-stone-800 bg-stone-950/95 backdrop-blur-md px-6 pt-3 pb-5 space-y-3 text-white">
-          <a
-            href="#fragrances"
-            onClick={() => {
-              setIsOpen(false)
-              if (onNavigate) onNavigate('home')
-            }}
-            className="block px-3 py-2 text-xs tracking-widest uppercase text-stone-200 hover:bg-white/10"
-          >
-            Fragrances
-          </a>
-          <a
-            href="#collections"
-            onClick={() => {
-              setIsOpen(false)
-              if (onNavigate) onNavigate('home')
-            }}
-            className="block px-3 py-2 text-xs tracking-widest uppercase text-stone-200 hover:bg-white/10"
-          >
-            Collections
-          </a>
-          <a
-            href="#about"
-            onClick={() => {
-              setIsOpen(false)
-              if (onNavigate) onNavigate('home')
-            }}
-            className="block px-3 py-2 text-xs tracking-widest uppercase text-stone-200 hover:bg-white/10"
-          >
-            About Us
-          </a>
-
-          {user?.role === 'admin' && (
+            {/* Mobile Menu Button */}
             <button
-              onClick={() => {
-                setIsOpen(false)
-                if (onNavigate) onNavigate(currentView === 'admin' ? 'home' : 'admin')
-              }}
-              className="w-full text-left px-3 py-2 text-xs tracking-widest uppercase text-white font-semibold bg-white/10 border border-white/20 rounded-md"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-stone-700"
+              type="button"
             >
-              {currentView === 'admin' ? 'View Store' : 'Admin Panel'}
+              <svg className="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
             </button>
-          )}
-
-          <div className="pt-3 border-t border-stone-800">
-            {user ? (
-              <button
-                onClick={() => {
-                  setIsOpen(false)
-                  logout()
-                }}
-                className="w-full text-center px-4 py-2.5 text-xs tracking-widest uppercase font-medium text-red-400 bg-red-950/40 hover:bg-red-900/60 border border-red-800/60 transition-colors rounded-md"
-              >
-                Sign Out ({user.name || user.email})
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setIsOpen(false)
-                  onOpenAuthModal('login')
-                }}
-                className="w-full text-center px-4 py-2.5 text-xs tracking-widest uppercase font-medium text-stone-900 bg-white hover:bg-stone-100 rounded-md"
-              >
-                Sign In
-              </button>
-            )}
           </div>
         </div>
-      )}
-    </nav>
-  )
-}
 
-export default Navbar
+        {/* Mobile Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-stone-200 flex flex-col gap-3 text-xs tracking-widest font-medium uppercase text-stone-700">
+            <a href="#fragrances" onClick={() => onNavigate && onNavigate('home')} className="hover:text-amber-800 py-1">
+              Fragrances
+            </a>
+            <a href="#collections" onClick={() => onNavigate && onNavigate('home')} className="hover:text-amber-800 py-1">
+              Collections
+            </a>
+            <a href="#about" onClick={() => onNavigate && onNavigate('home')} className="hover:text-amber-800 py-1">
+              About Us
+            </a>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
