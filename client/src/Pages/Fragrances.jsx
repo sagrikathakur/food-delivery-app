@@ -2,89 +2,11 @@ import React, { useState } from 'react';
 import FilterPanel from '../components/FilterPanel';
 import ProductCard from '../components/ProductCard';
 import Banner from '../components/Banner';
+import { perfumes_list } from '../assets/frontend_assets/assets';
 
-const sampleProducts = [
-  {
-    id: '1',
-    name: 'Oceanic Breeze',
-    concentration: 'Eau de Parfum',
-    family: 'Aquatic',
-    notes: 'Bergamot, Sea Salt, Ambergris',
-    price: 135.00,
-    rating: 4.9,
-    reviewsCount: 84,
-    size: '100 ml / 3.4 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500',
-    tag: 'Bestseller',
-  },
-  {
-    id: '2',
-    name: 'Velvet Amber & Vanilla',
-    concentration: 'Eau de Parfum',
-    family: 'Amber & Spice',
-    notes: 'Bourbon Vanilla, Amber Resin, Tonka',
-    price: 145.00,
-    rating: 4.8,
-    reviewsCount: 62,
-    size: '100 ml / 3.4 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=500',
-    tag: 'Signature',
-  },
-  {
-    id: '3',
-    name: 'Midnight Rose & Oud',
-    concentration: 'Extrait de Parfum',
-    family: 'Floral',
-    notes: 'Damask Rose, Smoked Oud, Patchouli',
-    price: 195.00,
-    rating: 5.0,
-    reviewsCount: 41,
-    size: '50 ml / 1.7 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500',
-    tag: 'Intense',
-  },
-  {
-    id: '4',
-    name: 'Solar Citrus & Bergamot',
-    concentration: 'Eau de Toilette',
-    family: 'Fresh & Citrus',
-    notes: 'Calabrian Bergamot, Lemon Zest, Cedar',
-    price: 110.00,
-    rating: 4.7,
-    reviewsCount: 29,
-    size: '100 ml / 3.4 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500',
-    tag: 'New',
-  },
-  {
-    id: '5',
-    name: 'Smoked Wood & Saffron',
-    concentration: 'Extrait de Parfum',
-    family: 'Woody & Earthy',
-    notes: 'Sandalwood, Saffron, Vetiver',
-    price: 210.00,
-    rating: 4.9,
-    reviewsCount: 53,
-    size: '100 ml / 3.4 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500',
-    tag: 'Artisan',
-  },
-  {
-    id: '6',
-    name: 'Wild Jasmine & Cypress',
-    concentration: 'Eau de Parfum',
-    family: 'Floral',
-    notes: 'Night Jasmine, White Musk, Cypress',
-    price: 150.00,
-    rating: 4.8,
-    reviewsCount: 38,
-    size: '100 ml / 3.4 fl. oz.',
-    image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=500',
-    tag: 'Limited Edition',
-  },
-];
+const sampleProducts = perfumes_list.map((p) => ({ ...p, id: p._id || p.id }));
 
-const Fragrances = ({ onAddToCart }) => {
+const Fragrances = ({ onAddToCart, onSelectProduct }) => {
   const [filters, setFilters] = useState({
     family: 'All',
     concentration: 'All',
@@ -172,6 +94,7 @@ const Fragrances = ({ onAddToCart }) => {
                   key={product.id}
                   product={product}
                   onAddToCart={onAddToCart}
+                  onSelectProduct={onSelectProduct}
                 />
               ))}
             </div>

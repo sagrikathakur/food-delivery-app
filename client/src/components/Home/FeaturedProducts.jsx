@@ -1,77 +1,57 @@
 import React from 'react';
 import ProductCard from '../ProductCard';
+import { perfumes_list } from '../../assets/frontend_assets/assets';
 
 const FeaturedProducts = ({
-  products = [
-    {
-      id: '1',
-      name: 'Oceanic Breeze',
-      concentration: 'Eau de Parfum',
-      notes: 'Bergamot, Sea Salt, Ambergris',
-      price: 135.00,
-      rating: 4.9,
-      reviewsCount: 84,
-      size: '100 ml / 3.4 fl. oz.',
-      image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500',
-      tag: 'Bestseller',
-    },
-    {
-      id: '2',
-      name: 'Velvet Amber & Vanilla',
-      concentration: 'Extrait de Parfum',
-      notes: 'Bourbon Vanilla, Warm Amber, Cedar',
-      price: 165.00,
-      rating: 4.9,
-      reviewsCount: 112,
-      size: '50 ml / 1.7 fl. oz.',
-      image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=500',
-      tag: 'Reserve Edition',
-    },
-    {
-      id: '3',
-      name: 'Wild Iris & Damask Rose',
-      concentration: 'Eau de Parfum',
-      notes: 'Damask Rose, Iris Petals, White Musk',
-      price: 128.00,
-      rating: 4.8,
-      reviewsCount: 67,
-      size: '100 ml / 3.4 fl. oz.',
-      image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500',
-      tag: 'Floral Choice',
-    },
-    {
-      id: '4',
-      name: 'Botanical Discovery Set',
-      concentration: 'Sample Vault',
-      notes: 'Includes 5 x 2ml Hand-Poured Vials',
-      price: 45.00,
-      rating: 5.0,
-      reviewsCount: 240,
-      size: '5 x 2 ml Vials',
-      image: 'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?w=500',
-      tag: 'Gift Set',
-    },
-  ],
+  selectedCategory = 'All',
   onAddToCart,
+  onSelectProduct,
 }) => {
+  const allProducts = perfumes_list.map((p) => ({ ...p, id: p._id || p.id }));
+
+  const displayedProducts = allProducts.filter((p) => {
+    if (!selectedCategory || selectedCategory === 'All') return true;
+    return (
+      p.category === selectedCategory ||
+      p.family?.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+      p.category?.toLowerCase().includes(selectedCategory.toLowerCase())
+    );
+  });
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-stone-200/80 pb-4">
         <div>
-          <h2 className="text-xl font-serif text-stone-900">Featured Artisanal Fragrances</h2>
-          <p className="text-xs text-stone-500 font-light mt-0.5">Distilled in small batches using rare botanical oils.</p>
+          <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
+            {selectedCategory === 'All' ? 'Complete Atelier Catalog' : `${selectedCategory} Collection`}
+          </span>
+          <h2 className="text-2xl font-serif text-stone-900 font-bold">
+            {selectedCategory === 'All' ? 'All Handcrafted Fragrances' : selectedCategory}
+          </h2>
+          <p className="text-xs text-stone-500 font-light mt-0.5">
+            Showing {displayedProducts.length} artisanal perfume editions distilled in small batches.
+          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={onAddToCart}
-          />
-        ))}
-      </div>
+      {displayedProducts.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-stone-200 p-12 text-center space-y-3">
+          <span className="text-4xl">🌸</span>
+          <h3 className="font-serif text-lg text-stone-800 font-medium">No fragrances found in this category</h3>
+          <p className="text-xs text-stone-500 font-light">Explore our complete collection or select another family filter.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {displayedProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={onAddToCart}
+              onSelectProduct={onSelectProduct}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

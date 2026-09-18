@@ -1,74 +1,50 @@
 import React from 'react';
 import ProductCard from '../components/ProductCard';
+import { assets, perfumes_list } from '../assets/frontend_assets/assets';
+
+// Normalize perfumes_list with id field
+const allPerfumes = perfumes_list.map((p) => ({ ...p, id: p._id || p.id }));
 
 const collectionsList = [
   {
-    id: 'ocean',
+    id: 'aquatic',
     title: 'The Ocean & Aquatic Collection',
     subtitle: 'Crisp coastal sea salt, marine minerals, and sun-warmed driftwood.',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800',
-    products: [
-      {
-        id: 'c1',
-        name: 'Oceanic Breeze',
-        concentration: 'Eau de Parfum',
-        notes: 'Bergamot, Sea Salt, Ambergris',
-        price: 135.00,
-        rating: 4.9,
-        reviewsCount: 84,
-        size: '100 ml',
-        image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400',
-        tag: 'Bestseller',
-      },
-      {
-        id: 'c2',
-        name: 'Solar Citrus & Bergamot',
-        concentration: 'Eau de Toilette',
-        notes: 'Calabrian Bergamot, Lemon Zest',
-        price: 110.00,
-        rating: 4.7,
-        reviewsCount: 29,
-        size: '100 ml',
-        image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400',
-        tag: 'Fresh',
-      },
-    ],
+    image: assets.istock_1008118858,
+    products: allPerfumes.filter((p) =>
+      ['Aquatic & Fresh', 'Citrus & Solar'].includes(p.category) || p.family === 'Aquatic'
+    ),
   },
   {
     id: 'amber',
     title: 'The Private Amber & Spice Reserve',
     subtitle: 'Deep bourbon vanilla, smoked oud, and spicy saffron extract.',
-    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800',
-    products: [
-      {
-        id: 'c3',
-        name: 'Velvet Amber & Vanilla',
-        concentration: 'Eau de Parfum',
-        notes: 'Bourbon Vanilla, Amber Resin',
-        price: 145.00,
-        rating: 4.8,
-        reviewsCount: 62,
-        size: '100 ml',
-        image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=400',
-        tag: 'Signature',
-      },
-      {
-        id: 'c4',
-        name: 'Midnight Rose & Oud',
-        concentration: 'Extrait de Parfum',
-        notes: 'Damask Rose, Smoked Oud',
-        price: 195.00,
-        rating: 5.0,
-        reviewsCount: 41,
-        size: '50 ml',
-        image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400',
-        tag: 'Intense',
-      },
-    ],
+    image: assets.istock_1253935837,
+    products: allPerfumes.filter((p) =>
+      ['Amber & Spice', 'Gourmand & Vanilla'].includes(p.category) || p.family === 'Amber & Spice'
+    ),
+  },
+  {
+    id: 'floral',
+    title: 'Royal Floral & Rose Atelier',
+    subtitle: 'Hand-harvested Damask roses, night-blooming jasmine, and wild orchid dew.',
+    image: assets.elegant_perfume_flowers_still_life,
+    products: allPerfumes.filter((p) =>
+      ['Floral & Rose', 'Wildflower Atelier', 'Botanical Still Life'].includes(p.category) || p.family === 'Floral'
+    ),
+  },
+  {
+    id: 'woody',
+    title: 'Ancient Woods & Golden Oud',
+    subtitle: 'Smoked Mysore sandalwood, Kashmiri saffron, and aged agarwood resin.',
+    image: assets.istock_160052159,
+    products: allPerfumes.filter((p) =>
+      ['Woody & Oud'].includes(p.category) || p.family?.includes('Woody')
+    ),
   },
 ];
 
-const Collections = ({ onAddToCart }) => {
+const Collections = ({ onAddToCart, onSelectProduct }) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-16">
       {/* Page Header */}
@@ -80,7 +56,7 @@ const Collections = ({ onAddToCart }) => {
           Bespoke Olfactory Chapters
         </h1>
         <p className="text-stone-600 text-sm font-light leading-relaxed">
-          Each collection is hand-poured in our coastal atelier, telling a distinct story through rare botanical extracts.
+          Each collection is hand-poured in our coastal atelier, telling a distinct story through rare botanical extracts imported directly from our assets vault.
         </p>
       </div>
 
@@ -88,25 +64,30 @@ const Collections = ({ onAddToCart }) => {
       {collectionsList.map((col) => (
         <div key={col.id} className="space-y-8 border-b border-stone-200/80 pb-12 last:border-none">
           {/* Collection Hero Banner */}
-          <div className="relative rounded-2xl overflow-hidden h-64 sm:h-80 shadow-md">
+          <div className="relative rounded-3xl overflow-hidden h-64 sm:h-80 shadow-lg border border-stone-200">
             <img
               src={col.image}
               alt={col.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-950/50 to-transparent flex items-center p-8 sm:p-12">
+            <div className="absolute inset-0 bg-gradient-to-r from-stone-950/85 via-stone-950/55 to-transparent flex items-center p-8 sm:p-12">
               <div className="max-w-md text-white space-y-2">
                 <span className="text-[11px] uppercase tracking-widest text-amber-300 font-semibold">Boutique Collection</span>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold">{col.title}</h2>
-                <p className="text-xs sm:text-sm text-stone-200 font-light">{col.subtitle}</p>
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-amber-50">{col.title}</h2>
+                <p className="text-xs sm:text-sm text-stone-200 font-light leading-relaxed">{col.subtitle}</p>
               </div>
             </div>
           </div>
 
           {/* Collection Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {col.products.map((product) => (
-              <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={onAddToCart}
+                onSelectProduct={onSelectProduct}
+              />
             ))}
           </div>
         </div>

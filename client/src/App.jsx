@@ -6,9 +6,11 @@ import AuthModal from './components/AuthModal'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import Hero from './Pages/Hero'
+import Home from './Pages/Home'
 import Fragrances from './Pages/Fragrances'
 import Collections from './Pages/Collections'
 import About from './Pages/About'
+import Product from './Pages/Product'
 import CheckoutPage from './Pages/CheckoutPage'
 import OrderTrackingPage from './Pages/OrderTrackingPage'
 import ProfilePage from './Pages/ProfilePage'
@@ -19,6 +21,7 @@ const PROTECTED_VIEWS = ['checkout', 'tracking', 'profile', 'admin']
 const AppContent = () => {
   const { user } = useAuth()
   const [currentView, setCurrentView] = useState('home')
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState('login')
   const [initialResetToken, setInitialResetToken] = useState('')
@@ -62,6 +65,13 @@ const AppContent = () => {
       return
     }
     setCurrentView(view)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleSelectProduct = (product) => {
+    setSelectedProduct(product)
+    setCurrentView('product')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const handleOpenCart = () => {
@@ -147,10 +157,35 @@ const AppContent = () => {
 
         <main>
           {currentView === 'home' && (
-            <Hero onOpenAuthModal={handleOpenAuthModal} onNavigate={handleNavigate} />
+            <>
+              <Hero onOpenAuthModal={handleOpenAuthModal} onNavigate={handleNavigate} />
+              <Home
+                onAddToCart={handleAddToCart}
+                onSelectProduct={handleSelectProduct}
+                onNavigate={handleNavigate}
+              />
+            </>
           )}
-          {currentView === 'fragrances' && <Fragrances onAddToCart={handleAddToCart} />}
-          {currentView === 'collections' && <Collections onAddToCart={handleAddToCart} />}
+          {currentView === 'fragrances' && (
+            <Fragrances
+              onAddToCart={handleAddToCart}
+              onSelectProduct={handleSelectProduct}
+            />
+          )}
+          {currentView === 'collections' && (
+            <Collections
+              onAddToCart={handleAddToCart}
+              onSelectProduct={handleSelectProduct}
+            />
+          )}
+          {currentView === 'product' && (
+            <Product
+              product={selectedProduct}
+              onAddToCart={handleAddToCart}
+              onSelectProduct={handleSelectProduct}
+              onNavigate={handleNavigate}
+            />
+          )}
           {currentView === 'about' && <About />}
           {currentView === 'checkout' && (
             <ProtectedRoute

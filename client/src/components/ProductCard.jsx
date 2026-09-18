@@ -14,8 +14,15 @@ const ProductCard = ({
     tag: 'Bestseller',
   },
   onAddToCart,
+  onSelectProduct,
 }) => {
   const [isAdded, setIsAdded] = useState(false);
+
+  const handleCardClick = () => {
+    if (onSelectProduct) {
+      onSelectProduct(product);
+    }
+  };
 
   const handleAdd = (e) => {
     e.stopPropagation();
@@ -31,8 +38,10 @@ const ProductCard = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-md hover:border-stone-300 transition-all duration-300 group flex flex-col justify-between">
-      
+    <div
+      onClick={handleCardClick}
+      className="bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-md hover:border-amber-700/40 transition-all duration-300 group flex flex-col justify-between cursor-pointer"
+    >
       {/* Bottle Image Container */}
       <div className="relative h-64 w-full bg-stone-50 overflow-hidden flex items-center justify-center p-4">
         <img
