@@ -48,5 +48,3 @@ const Hero = ({ onOpenAuthModal, onNavigate }) => {
 }
 
 export default Hero
-
-

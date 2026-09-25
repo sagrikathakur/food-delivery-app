@@ -14,7 +14,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
     return nameOrEmail.substring(0, 2).toUpperCase();
   };
 
-  const isTransparent = transparent && currentView === 'home';
+  const isTransparent = transparent && (currentView === '/' || currentView === 'home');
 
   return (
     <nav
@@ -31,9 +31,9 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
             href="/"
             onClick={(e) => {
               e.preventDefault();
-              if (onNavigate) onNavigate('home');
+              if (onNavigate) onNavigate('/');
             }}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2 group cursor-pointer"
           >
             <span
               className={`text-xl font-serif tracking-wider uppercase ${
@@ -63,7 +63,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 e.preventDefault();
                 if (onNavigate) onNavigate('/fragrances');
               }}
-              className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
+              className={`transition-colors cursor-pointer ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
               Fragrances
             </a>
@@ -73,7 +73,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 e.preventDefault();
                 if (onNavigate) onNavigate('/collections');
               }}
-              className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
+              className={`transition-colors cursor-pointer ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
               Collections
             </a>
@@ -83,7 +83,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 e.preventDefault();
                 if (onNavigate) onNavigate('/about');
               }}
-              className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
+              className={`transition-colors cursor-pointer ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
               About Us
             </a>
@@ -94,7 +94,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                   e.preventDefault();
                   if (onNavigate) onNavigate('/admin');
                 }}
-                className={`transition-colors font-bold ${isTransparent ? 'text-amber-300 hover:text-white' : 'text-amber-800 hover:text-stone-900'}`}
+                className={`transition-colors font-bold cursor-pointer ${isTransparent ? 'text-amber-300 hover:text-white' : 'text-amber-800 hover:text-stone-900'}`}
               >
                 Admin Panel
               </a>
@@ -107,7 +107,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
             <button
               onClick={onOpenCart}
               type="button"
-              className={`relative p-2 transition-colors ${
+              className={`relative p-2 transition-colors cursor-pointer ${
                 isTransparent ? 'text-white hover:text-amber-200' : 'text-stone-700 hover:text-amber-800'
               }`}
               title="Shopping Bag"
@@ -127,7 +127,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
               <div className={`flex items-center gap-3 pl-3 border-l ${isTransparent ? 'border-white/20' : 'border-stone-200'}`}>
                 <button
                   onClick={() => onNavigate && onNavigate('/profile')}
-                  className={`w-8 h-8 rounded-full font-serif font-bold text-xs flex items-center justify-center border hover:scale-105 transition-all ${
+                  className={`w-8 h-8 rounded-full font-serif font-bold text-xs flex items-center justify-center border hover:scale-105 transition-all cursor-pointer ${
                     isTransparent
                       ? 'bg-white/20 text-white border-white/30 backdrop-blur-xs'
                       : 'bg-stone-100 text-amber-800 border-amber-200'
@@ -138,7 +138,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 </button>
                 <button
                   onClick={logout}
-                  className={`text-xs transition-colors ${
+                  className={`text-xs transition-colors cursor-pointer ${
                     isTransparent ? 'text-white/80 hover:text-white' : 'text-stone-500 hover:text-stone-800'
                   }`}
                   type="button"
@@ -150,7 +150,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
               <button
                 onClick={() => onOpenAuthModal && onOpenAuthModal('login')}
                 type="button"
-                className={`px-5 py-2.5 text-xs font-medium uppercase tracking-widest rounded-md transition-all shadow-xs ${
+                className={`px-5 py-2.5 text-xs font-medium uppercase tracking-widest rounded-md transition-all shadow-xs cursor-pointer ${
                   isTransparent
                     ? 'bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-xs'
                     : 'bg-stone-900 hover:bg-amber-900 text-white'

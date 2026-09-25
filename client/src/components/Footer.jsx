@@ -16,7 +16,7 @@ const Footer = ({ onNavigate }) => {
           
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4 pr-0 lg:pr-6">
-            <a href="/" onClick={(e) => handleLinkClick(e, 'home')} className="inline-block">
+            <a href="/" onClick={(e) => handleLinkClick(e, '/')} className="inline-block">
               <span className="text-xl font-serif tracking-widest text-white uppercase font-bold">
                 Ocean <span className="text-amber-300 text-xs font-sans font-normal tracking-widest ml-1">Parfums</span>
               </span>
@@ -35,22 +35,22 @@ const Footer = ({ onNavigate }) => {
             <h4 className="text-xs font-semibold text-white uppercase tracking-widest">Shop</h4>
             <ul className="space-y-2 text-xs text-stone-400 font-light">
               <li>
-                <a href="#fragrances" onClick={(e) => handleLinkClick(e, 'fragrances')} className="hover:text-amber-300 transition-colors">
+                <a href="/fragrances" onClick={(e) => handleLinkClick(e, '/fragrances')} className="hover:text-amber-300 transition-colors">
                   All Fragrances
                 </a>
               </li>
               <li>
-                <a href="#collections" onClick={(e) => handleLinkClick(e, 'collections')} className="hover:text-amber-300 transition-colors">
+                <a href="/collections" onClick={(e) => handleLinkClick(e, '/collections')} className="hover:text-amber-300 transition-colors">
                   Fragrance Collections
                 </a>
               </li>
               <li>
-                <a href="#discovery" onClick={(e) => handleLinkClick(e, 'fragrances')} className="hover:text-amber-300 transition-colors">
+                <a href="/fragrances" onClick={(e) => handleLinkClick(e, '/fragrances')} className="hover:text-amber-300 transition-colors">
                   Sample Discovery Sets
                 </a>
               </li>
               <li>
-                <a href="#bestsellers" onClick={(e) => handleLinkClick(e, 'fragrances')} className="hover:text-amber-300 transition-colors">
+                <a href="/fragrances" onClick={(e) => handleLinkClick(e, '/fragrances')} className="hover:text-amber-300 transition-colors">
                   Bestsellers
                 </a>
               </li>
@@ -62,22 +62,22 @@ const Footer = ({ onNavigate }) => {
             <h4 className="text-xs font-semibold text-white uppercase tracking-widest">Atelier</h4>
             <ul className="space-y-2 text-xs text-stone-400 font-light">
               <li>
-                <a href="#about" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   Our Story
                 </a>
               </li>
               <li>
-                <a href="#process" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   Distillation Process
                 </a>
               </li>
               <li>
-                <a href="#sustainability" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   Sustainable Sourcing
                 </a>
               </li>
               <li>
-                <a href="#boutique" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   Beverly Hills Boutique
                 </a>
               </li>
@@ -89,22 +89,22 @@ const Footer = ({ onNavigate }) => {
             <h4 className="text-xs font-semibold text-white uppercase tracking-widest">Customer Care</h4>
             <ul className="space-y-2 text-xs text-stone-400 font-light">
               <li>
-                <a href="#profile" onClick={(e) => handleLinkClick(e, 'profile')} className="hover:text-amber-300 transition-colors">
+                <a href="/profile" onClick={(e) => handleLinkClick(e, '/profile')} className="hover:text-amber-300 transition-colors">
                   My Account
                 </a>
               </li>
               <li>
-                <a href="#tracking" onClick={(e) => handleLinkClick(e, 'tracking')} className="hover:text-amber-300 transition-colors">
+                <a href="/tracking" onClick={(e) => handleLinkClick(e, '/tracking')} className="hover:text-amber-300 transition-colors">
                   Order Tracking
                 </a>
               </li>
               <li>
-                <a href="#shipping" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   Shipping & Returns
                 </a>
               </li>
               <li>
-                <a href="#faq" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-amber-300 transition-colors">
+                <a href="/about" onClick={(e) => handleLinkClick(e, '/about')} className="hover:text-amber-300 transition-colors">
                   FAQ & Contact
                 </a>
               </li>
@@ -144,4 +144,3 @@ const Footer = ({ onNavigate }) => {
 };
 
 export default Footer;
-

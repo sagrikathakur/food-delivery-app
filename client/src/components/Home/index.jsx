@@ -25,14 +25,16 @@ const HomeContent = ({ onAddToCart, onSelectProduct, onNavigate }) => {
           onSelectCategory={(cat) => setSelectedCategory(cat)}
         />
 
-        {/* 2. All Products E-Commerce Catalog Grid */}
+        {/* 2. Featured Bestseller Fragrances (Top 4 only instead of full catalog) */}
         <FeaturedProducts
           selectedCategory={selectedCategory}
           onAddToCart={onAddToCart}
           onSelectProduct={onSelectProduct}
+          onNavigate={onNavigate}
+          limit={4}
         />
 
-        {/* 3. Clean Value Propositions (No Container Boxes) */}
+        {/* 3. Clean Value Propositions */}
         <div className="py-8 border-y border-stone-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-1">
@@ -149,5 +151,3 @@ const HomeContent = ({ onAddToCart, onSelectProduct, onNavigate }) => {
 };
 
 export default HomeContent;
-
-
