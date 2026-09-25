@@ -1,4 +1,5 @@
 import pool from "./database.js";
+import bcrypt from "bcrypt";
 
 /**
  * Initializes database tables and schemas
@@ -57,7 +58,25 @@ export const initDb = async () => {
       );
     `);
 
-    console.log("Database schema initialized successfully.");
+    // 5. Seed default Admin Accounts if they don't exist
+    const admin1Hash = await bcrypt.hash("Nupur@123", 12);
+    const admin2Hash = await bcrypt.hash("Pasha@123", 12);
+
+    await pool.query(
+      `
+      INSERT INTO users (name, email, password_hash, role, is_active)
+      VALUES 
+        ('Nupur Admin', 'nupur@gmail.com', $1, 'admin', true),
+        ('Sanu Singh Admin', 'sanusingh@gmail.com', $2, 'admin', true)
+      ON CONFLICT (email) 
+      DO UPDATE SET 
+        role = 'admin',
+        is_active = true;
+      `,
+      [admin1Hash, admin2Hash]
+    );
+
+    console.log("Database schema and admin accounts initialized successfully.");
   } catch (error) {
     console.error("Database initialization error:", error);
   }

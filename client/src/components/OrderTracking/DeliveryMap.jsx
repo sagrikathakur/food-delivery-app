@@ -15,23 +15,23 @@ const DeliveryMap = ({
         <div className="absolute inset-0 bg-[radial-gradient(#d6d3d1_1px,transparent_1px)] [background-size:16px_16px]" />
 
         {/* Route Line */}
-        <svg className="absolute inset-0 w-full h-full stroke-amber-800" fill="none">
+        <svg className="absolute inset-0 w-full h-full stroke-stone-800" fill="none">
           <path d="M 60 180 Q 220 70, 380 130 T 560 90" strokeWidth="3" strokeDasharray="5 5" />
         </svg>
 
         {/* Atelier Origin Pin */}
-        <div className="absolute left-10 bottom-10 bg-white text-stone-900 px-3 py-1.5 rounded-lg shadow-md border border-stone-200 flex items-center gap-1.5 text-xs font-serif">
-          <span>🏬</span> Ocean Parfums Atelier
+        <div className="absolute left-10 bottom-10 bg-white text-stone-900 px-3 py-1.5 rounded-lg shadow-md border border-stone-200 text-xs font-serif font-bold">
+          Ocean Parfums Atelier
         </div>
 
         {/* Transit Flight Pin */}
-        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 bg-amber-800 text-white p-2.5 rounded-full shadow-lg border-2 border-white animate-pulse flex items-center justify-center">
-          <span className="text-base">✈️</span>
+        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 bg-stone-900 text-white p-2.5 rounded-full shadow-lg border-2 border-white animate-pulse flex items-center justify-center text-xs font-bold">
+          Transit
         </div>
 
         {/* Destination Pin */}
-        <div className="absolute right-10 top-10 bg-stone-900 text-white px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1.5 text-xs font-serif">
-          <span>🏠</span> Delivery Address
+        <div className="absolute right-10 top-10 bg-stone-900 text-white px-3 py-1.5 rounded-lg shadow-md text-xs font-serif font-bold">
+          Delivery Address
         </div>
       </div>
 
@@ -46,9 +46,9 @@ const DeliveryMap = ({
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <a
             href={`tel:${carrier.supportPhone}`}
-            className="flex-1 sm:flex-none px-5 py-2.5 bg-stone-900 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-wider rounded-md transition-all shadow-xs flex items-center justify-center gap-2"
+            className="flex-1 sm:flex-none px-5 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider rounded-md transition-all shadow-xs flex items-center justify-center"
           >
-            <span>📦</span> Track Courier Live
+            Track Courier Live
           </a>
         </div>
       </div>

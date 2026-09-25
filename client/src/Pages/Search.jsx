@@ -148,7 +148,7 @@ export default function Search() {
                     e.stopPropagation();
                     navigate(`/booking/${res.slug}`);
                   }}
-                  className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-semibold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
+                  className="w-full py-2.5 bg-[#1a1c1c] hover:bg-black text-amber-400 hover:text-white border border-amber-500/30 text-xs font-semibold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
                 >
                   Reserve Table
                 </button>

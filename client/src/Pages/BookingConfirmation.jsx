@@ -53,7 +53,7 @@ export default function BookingConfirmation() {
             </div>
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-md"
+              className="w-full py-3 bg-stone-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-md"
             >
               View My Dashboard
             </button>
@@ -124,7 +124,7 @@ export default function BookingConfirmation() {
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
+              className="w-full py-3.5 bg-stone-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
             >
               Complete Reservation
             </button>

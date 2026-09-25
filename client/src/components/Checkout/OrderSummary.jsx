@@ -36,8 +36,8 @@ const OrderSummary = ({
 
       {/* Complimentary Extras */}
       <div className="p-3 rounded-lg bg-amber-50/60 border border-amber-200/60 text-[11px] text-amber-900 font-light space-y-1">
-        <p className="font-medium text-amber-950 flex items-center gap-1">
-          <span>✨</span> Complimentary Add-ons Included:
+        <p className="font-medium text-amber-950">
+          Complimentary Add-ons Included:
         </p>
         <p>• 2ml Discovery Vial (Wild Iris)</p>
         <p>• Signature Luxury Gift Box & Ribbon</p>

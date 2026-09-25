@@ -49,13 +49,20 @@ export const loginUser = async ({ email, password }) => {
     throw error;
   }
 
-  if (!user.is_active) {
+  const adminEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : ["nupur@gmail.com", "admin@gmail.com"];
+
+  const isAdmin = user.role === "admin" || adminEmails.includes(email.trim().toLowerCase());
+  const effectiveRole = isAdmin ? "admin" : user.role;
+
+  if (!user.is_active && !isAdmin) {
     const error = new Error("User account is inactive");
     error.statusCode = 403;
     throw error;
   }
 
-  const payload = { id: user.id, role: user.role };
+  const payload = { id: user.id, role: effectiveRole };
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
 
@@ -68,7 +75,7 @@ export const loginUser = async ({ email, password }) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      role: user.role,
+      role: effectiveRole,
     },
     accessToken,
     refreshToken,

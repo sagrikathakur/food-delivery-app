@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../ProductCard';
-import { perfumes_list } from '../../assets/frontend_assets/assets';
+import { getStoredProducts } from '../../utils/catalogStorage';
 
 const FeaturedProducts = ({
   selectedCategory = 'All',
@@ -9,7 +9,13 @@ const FeaturedProducts = ({
   onNavigate,
   limit = 4,
 }) => {
-  const allProducts = perfumes_list.map((p) => ({ ...p, id: p._id || p.id }));
+  const [allProducts, setAllProducts] = useState(getStoredProducts());
+
+  useEffect(() => {
+    const handleUpdate = () => setAllProducts(getStoredProducts());
+    window.addEventListener('ocean_catalog_updated', handleUpdate);
+    return () => window.removeEventListener('ocean_catalog_updated', handleUpdate);
+  }, []);
 
   const filteredProducts = allProducts.filter((p) => {
     if (!selectedCategory || selectedCategory === 'All') return true;
@@ -73,7 +79,7 @@ const FeaturedProducts = ({
         <div className="text-center pt-4">
           <button
             onClick={() => onNavigate('/fragrances')}
-            className="px-8 py-3 bg-stone-900 hover:bg-amber-900 text-white text-xs font-semibold uppercase tracking-widest rounded-lg transition-colors cursor-pointer shadow-sm"
+            className="px-8 py-3 bg-stone-900 hover:bg-black text-white text-xs font-semibold uppercase tracking-widest rounded-lg transition-colors cursor-pointer shadow-sm"
           >
             View Entire Fragrance Catalog
           </button>

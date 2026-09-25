@@ -211,7 +211,7 @@ const ProfilePage = ({ onOpenAuthModal }) => {
             </div>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-stone-900 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-wider rounded-md"
+              className="px-6 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider rounded-md"
             >
               Save Changes
             </button>
@@ -371,7 +371,7 @@ const ProfilePage = ({ onOpenAuthModal }) => {
             </div>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-stone-900 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-wider rounded-md"
+              className="px-6 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider rounded-md"
             >
               Update Password
             </button>

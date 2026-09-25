@@ -153,7 +153,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 className={`px-5 py-2.5 text-xs font-medium uppercase tracking-widest rounded-md transition-all shadow-xs cursor-pointer ${
                   isTransparent
                     ? 'bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-xs'
-                    : 'bg-stone-900 hover:bg-amber-900 text-white'
+                    : 'bg-stone-900 hover:bg-black text-white'
                 }`}
               >
                 Sign In

@@ -102,7 +102,7 @@ const ProductCard = ({
             className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
               isAdded
                 ? 'bg-stone-800 text-white'
-                : 'bg-stone-900 hover:bg-stone-800 text-white'
+                : 'bg-stone-900 hover:bg-black text-white'
             }`}
           >
             {isAdded ? 'Added' : 'Add to Bag'}

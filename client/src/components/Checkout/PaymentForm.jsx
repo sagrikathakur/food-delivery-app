@@ -18,26 +18,25 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm space-y-6">
-      <h3 className="font-serif text-stone-900 text-lg">Payment Details</h3>
+      <h3 className="font-serif text-stone-900 text-lg font-bold">Payment Details</h3>
 
       {/* Payment Tabs */}
       <div className="grid grid-cols-2 gap-3">
         {[
-          { id: 'card', label: 'Credit / Debit Card', icon: '💳' },
-          { id: 'express', label: 'Apple Pay / GPay', icon: '📲' },
+          { id: 'card', label: 'Credit / Debit Card' },
+          { id: 'express', label: 'Apple Pay / GPay' },
         ].map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setMethod(tab.id)}
-            className={`p-3 rounded-xl border text-center transition-all ${
+            className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
               method === tab.id
-                ? 'bg-amber-50/60 border-amber-800 text-amber-900 font-medium'
+                ? 'bg-stone-900 border-stone-900 text-white font-medium'
                 : 'border-stone-200 hover:bg-stone-50 text-stone-600'
             }`}
           >
-            <span className="block text-lg mb-1">{tab.icon}</span>
-            <span className="text-xs">{tab.label}</span>
+            <span className="text-xs font-semibold">{tab.label}</span>
           </button>
         ))}
       </div>
@@ -53,7 +52,7 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
               placeholder="E.g. Eleanor Vance"
               value={cardData.name}
               onChange={(e) => setCardData({ ...cardData, name: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-amber-800"
+              className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-stone-900"
               required
             />
           </div>
@@ -67,7 +66,7 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
               placeholder="•••• •••• •••• 4242"
               value={cardData.number}
               onChange={(e) => setCardData({ ...cardData, number: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-amber-800"
+              className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-stone-900 font-mono"
               required
             />
           </div>
@@ -82,7 +81,7 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
                 placeholder="MM/YY"
                 value={cardData.expiry}
                 onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-amber-800"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-stone-900 font-mono"
                 required
               />
             </div>
@@ -96,7 +95,7 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
                 maxLength={4}
                 value={cardData.cvv}
                 onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-amber-800"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-xs focus:outline-none focus:border-stone-900 font-mono"
                 required
               />
             </div>
@@ -114,7 +113,7 @@ const PaymentForm = ({ onSubmitPayment, isProcessing = false }) => {
       <button
         type="submit"
         disabled={isProcessing}
-        className="w-full py-3.5 bg-stone-900 hover:bg-amber-900 disabled:opacity-50 text-white font-medium text-xs uppercase tracking-widest rounded-md transition-all shadow-md active:scale-98"
+        className="w-full py-3.5 bg-stone-900 hover:bg-black disabled:opacity-50 text-white font-medium text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer"
       >
         {isProcessing ? 'Processing Bespoke Order...' : 'Place Fragrance Order'}
       </button>

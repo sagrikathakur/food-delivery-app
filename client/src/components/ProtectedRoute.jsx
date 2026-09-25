@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children, allowedRoles, onOpenAuthModal, title = "Memb
           <div className="pt-2 flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => onOpenAuthModal && onOpenAuthModal('login')}
-              className="flex-1 py-3 px-6 bg-stone-900 hover:bg-amber-900 text-white text-xs font-medium uppercase tracking-widest rounded-lg transition-colors shadow-sm cursor-pointer"
+              className="flex-1 py-3 px-6 bg-stone-900 hover:bg-black text-white text-xs font-medium uppercase tracking-widest rounded-lg transition-colors shadow-sm cursor-pointer"
             >
               Sign In
             </button>

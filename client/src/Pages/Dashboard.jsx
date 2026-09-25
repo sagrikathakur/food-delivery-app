@@ -36,7 +36,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={() => navigate('/search')}
-            className="py-2.5 px-5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-md"
+            className="py-2.5 px-5 bg-stone-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-md"
           >
             + New Reservation
           </button>

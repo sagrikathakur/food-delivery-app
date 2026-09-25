@@ -38,8 +38,8 @@ const Checkout = ({
         <div className="lg:col-span-7 space-y-6">
           {/* Step 2: Address Selection */}
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-            <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2">
-              <span>📍</span> Delivery Address
+            <h3 className="font-bold text-slate-800 text-lg">
+              Delivery Address
             </h3>
 
             <AddressCard

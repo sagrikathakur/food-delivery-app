@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FilterPanel from '../components/FilterPanel';
 import ProductCard from '../components/ProductCard';
-import Banner from '../components/Banner';
-import { perfumes_list } from '../assets/frontend_assets/assets';
-
-const sampleProducts = perfumes_list.map((p) => ({ ...p, id: p._id || p.id }));
+import { getStoredProducts } from '../utils/catalogStorage';
 
 const Fragrances = ({ onAddToCart, onSelectProduct }) => {
+  const [products, setProducts] = useState(getStoredProducts());
   const [filters, setFilters] = useState({
     family: 'All',
     concentration: 'All',
@@ -14,6 +12,12 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
     notes: [],
     sortBy: 'popular',
   });
+
+  useEffect(() => {
+    const handleUpdate = () => setProducts(getStoredProducts());
+    window.addEventListener('ocean_catalog_updated', handleUpdate);
+    return () => window.removeEventListener('ocean_catalog_updated', handleUpdate);
+  }, []);
 
   const handleApplyFilters = (newFilters) => {
     setFilters(newFilters);
@@ -29,7 +33,7 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
     });
   };
 
-  const filteredProducts = sampleProducts
+  const filteredProducts = products
     .filter((product) => {
       if (filters.family !== 'All' && product.family !== filters.family) return false;
       if (filters.concentration !== 'All' && product.concentration !== filters.concentration) return false;
@@ -104,12 +108,7 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
             </div>
           )}
 
-          {/* Discovery Banner */}
-          <Banner
-            title="Scent Sample Set"
-            subtitle="Select any 3 sample vials (2ml) to test at home before buying full size."
-            actionText="Browse Samples"
-          />
+
         </div>
       </div>
     </div>

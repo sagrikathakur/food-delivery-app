@@ -5,10 +5,10 @@ const TrackerStatus = ({
   estimatedTime = 'Expected Delivery: Friday, Sep 19',
 }) => {
   const steps = [
-    { id: 1, title: 'Bespoke Order Confirmed', desc: 'Sep 17, 10:15 AM', icon: '📝' },
-    { id: 2, title: 'Atelier Bottled & Sealed', desc: 'Sep 17, 02:30 PM', icon: '✨' },
-    { id: 3, title: 'Shipped via Air Courier', desc: 'In Transit', icon: '✈️' },
-    { id: 4, title: 'Delivered', desc: 'Pending', icon: '🎁' },
+    { id: 1, title: 'Bespoke Order Confirmed', desc: 'Sep 17, 10:15 AM' },
+    { id: 2, title: 'Atelier Bottled & Sealed', desc: 'Sep 17, 02:30 PM' },
+    { id: 3, title: 'Shipped via Air Courier', desc: 'In Transit' },
+    { id: 4, title: 'Delivered', desc: 'Pending' },
   ];
 
   const currentStepIndex = 3;
@@ -17,10 +17,10 @@ const TrackerStatus = ({
     <div className="bg-white rounded-2xl border border-stone-200 p-6 md:p-8 shadow-sm space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-stone-100">
         <div>
-          <span className="text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded bg-amber-100 text-amber-900">
+          <span className="text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded bg-stone-100 text-stone-800 border border-stone-200">
             Order #OP-88291
           </span>
-          <h2 className="text-2xl font-serif text-stone-900 mt-2">
+          <h2 className="text-2xl font-serif text-stone-900 mt-2 font-bold">
             Status: <span className="text-amber-900">{status}</span>
           </h2>
         </div>
@@ -43,17 +43,21 @@ const TrackerStatus = ({
                 key={s.id}
                 className={`p-4 rounded-xl border transition-all ${
                   isCurrent
-                    ? 'bg-amber-50/50 border-amber-800 ring-1 ring-amber-800/20 shadow-xs'
+                    ? 'bg-stone-900 border-stone-900 text-white shadow-xs'
                     : isDone
-                    ? 'bg-stone-50 border-stone-200'
-                    : 'bg-white border-stone-100 opacity-40'
+                    ? 'bg-stone-50 border-stone-200 text-stone-900'
+                    : 'bg-white border-stone-100 opacity-40 text-stone-400'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{s.icon}</span>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                    isCurrent ? 'bg-amber-400 text-stone-950' : 'bg-stone-200 text-stone-800'
+                  }`}>
+                    {s.id}
+                  </div>
                   <div>
-                    <h4 className="font-serif font-semibold text-stone-900 text-xs">{s.title}</h4>
-                    <p className="text-[11px] text-stone-400 mt-0.5 font-light">{s.desc}</p>
+                    <h4 className="font-serif font-semibold text-xs">{s.title}</h4>
+                    <p className="text-[11px] opacity-80 mt-0.5 font-light">{s.desc}</p>
                   </div>
                 </div>
               </div>

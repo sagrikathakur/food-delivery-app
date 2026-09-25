@@ -71,7 +71,7 @@ const CartSidebar = ({
                   onClose();
                   if (onOpenAuthModal) onOpenAuthModal('login');
                 }}
-                className="px-3 py-1.5 bg-amber-800 hover:bg-amber-900 text-white rounded-md text-[11px] font-medium shrink-0 transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-amber-800 hover:bg-black text-white rounded-md text-[11px] font-medium shrink-0 transition-colors cursor-pointer"
               >
                 Sign In
               </button>
@@ -104,7 +104,7 @@ const CartSidebar = ({
                         onClose();
                         if (onOpenAuthModal) onOpenAuthModal('login');
                       }}
-                      className="w-full py-2.5 px-4 bg-amber-700 hover:bg-amber-800 text-white font-medium text-xs rounded-lg transition-all shadow-xs cursor-pointer"
+                      className="w-full py-2.5 px-4 bg-stone-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-all shadow-xs cursor-pointer"
                     >
                       Sign in to your account
                     </button>
@@ -198,7 +198,7 @@ const CartSidebar = ({
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-stone-900 text-white rounded-md text-xs uppercase font-medium tracking-wider hover:bg-amber-900 transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-stone-900 text-white rounded-md text-xs uppercase font-medium tracking-wider hover:bg-black transition-colors cursor-pointer"
                 >
                   Apply
                 </button>
@@ -236,7 +236,7 @@ const CartSidebar = ({
               <button
                 onClick={onCheckout}
                 type="button"
-                className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                className="w-full py-3.5 px-4 bg-stone-900 hover:bg-black text-white font-semibold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
               >
                 Proceed to Checkout
               </button>

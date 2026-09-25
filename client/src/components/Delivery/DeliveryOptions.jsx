@@ -33,8 +33,8 @@ const DeliveryOptions = ({
 
   return (
     <div className="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm space-y-4">
-      <h3 className="font-serif text-stone-900 text-lg flex items-center gap-2">
-        <span>📦</span> Shipping & Dispatch Option
+      <h3 className="font-serif text-stone-900 text-lg font-bold">
+        Shipping & Dispatch Option
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -46,7 +46,7 @@ const DeliveryOptions = ({
               onClick={() => onSelectOption && onSelectOption(opt.id)}
               className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-amber-50/50 border-amber-800 ring-1 ring-amber-800/20 shadow-xs'
+                  ? 'bg-stone-50 border-stone-900 shadow-xs font-semibold'
                   : 'border-stone-200 hover:border-stone-300 hover:bg-stone-50'
               }`}
             >
@@ -54,7 +54,7 @@ const DeliveryOptions = ({
                 <div className="flex justify-between items-start gap-2">
                   <h4 className="font-serif font-semibold text-stone-900 text-xs">{opt.name}</h4>
                   {opt.badge && (
-                    <span className="text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900">
+                    <span className="text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 rounded bg-stone-100 text-stone-800">
                       {opt.badge}
                     </span>
                   )}
@@ -63,8 +63,8 @@ const DeliveryOptions = ({
               </div>
 
               <div className="mt-4 pt-3 border-t border-stone-100 flex justify-between items-center text-xs">
-                <span className="font-light text-stone-600">⏱️ {opt.time}</span>
-                <span className="font-serif font-bold text-amber-900">{opt.price}</span>
+                <span className="font-light text-stone-600">{opt.time}</span>
+                <span className="font-serif font-bold text-stone-900">{opt.price}</span>
               </div>
             </div>
           );

@@ -43,7 +43,7 @@ export default function RestaurantDetail() {
           </div>
           <button
             onClick={() => navigate(`/booking/${slug || 'le-gourmet-bistro'}`)}
-            className="py-3 px-6 bg-amber-500 hover:bg-amber-400 text-stone-950 font-semibold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all cursor-pointer"
+            className="py-3 px-6 bg-stone-900 hover:bg-black text-white font-semibold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all cursor-pointer"
           >
             Book A Table Now
           </button>
@@ -141,7 +141,7 @@ export default function RestaurantDetail() {
           </div>
           <button
             onClick={() => navigate(`/booking/${slug || 'le-gourmet-bistro'}`)}
-            className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
+            className="w-full py-3 bg-stone-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
           >
             Continue Booking
           </button>
