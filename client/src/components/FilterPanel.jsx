@@ -44,31 +44,25 @@ const FilterPanel = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-        <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-amber-800 stroke-current" fill="none" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          <h3 className="font-serif text-stone-900 text-base">Filter Fragrances</h3>
-        </div>
-
+    <div className="space-y-6 text-xs text-stone-700">
+      <div className="flex items-center justify-between pb-3 border-b border-stone-200">
+        <h3 className="font-serif font-bold text-stone-900 text-base">Filters</h3>
         <button
           onClick={handleReset}
           type="button"
-          className="text-xs font-medium text-stone-400 hover:text-amber-800 transition-colors"
+          className="text-xs text-stone-500 hover:text-stone-900 underline transition-colors cursor-pointer"
         >
-          Reset All
+          Reset
         </button>
       </div>
 
       {/* Sort By */}
       <div className="space-y-2">
-        <label className="text-[11px] font-semibold text-stone-700 uppercase tracking-widest">Sort By</label>
+        <label className="text-[11px] font-semibold text-stone-800 uppercase tracking-wider block">Sort By</label>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-lg border border-stone-200 bg-stone-50 text-stone-700 text-xs focus:outline-none focus:border-amber-700"
+          className="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-stone-800 text-xs focus:outline-none focus:border-stone-900"
         >
           <option value="popular">Most Popular</option>
           <option value="newest">New Arrivals</option>
@@ -80,51 +74,51 @@ const FilterPanel = ({
 
       {/* Fragrance Family */}
       <div className="space-y-2">
-        <label className="text-[11px] font-semibold text-stone-700 uppercase tracking-widest">Fragrance Family</label>
-        <div className="flex flex-wrap gap-1.5">
+        <label className="text-[11px] font-semibold text-stone-800 uppercase tracking-wider block">Fragrance Family</label>
+        <div className="space-y-1.5 pt-1">
           {fragranceFamilies.map((fam) => (
-            <button
+            <label
               key={fam}
               onClick={() => setSelectedFamily(fam)}
-              type="button"
-              className={`px-3 py-1.5 rounded-md text-xs transition-all ${
+              className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer transition-colors ${
                 selectedFamily === fam
-                  ? 'bg-amber-800 text-white shadow-xs font-medium'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  ? 'bg-stone-100 font-semibold text-stone-900'
+                  : 'hover:bg-stone-50 text-stone-600'
               }`}
             >
-              {fam}
-            </button>
+              <span>{fam}</span>
+              {selectedFamily === fam && <span className="text-stone-900 font-bold">✓</span>}
+            </label>
           ))}
         </div>
       </div>
 
       {/* Concentration */}
       <div className="space-y-2">
-        <label className="text-[11px] font-semibold text-stone-700 uppercase tracking-widest">Concentration</label>
-        <div className="grid grid-cols-2 gap-2">
+        <label className="text-[11px] font-semibold text-stone-800 uppercase tracking-wider block">Concentration</label>
+        <div className="space-y-1.5 pt-1">
           {concentrations.map((conc) => (
-            <button
+            <label
               key={conc}
               onClick={() => setSelectedConcentration(conc)}
-              type="button"
-              className={`py-2 px-2.5 rounded-md text-xs border text-center transition-all ${
+              className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer transition-colors ${
                 selectedConcentration === conc
-                  ? 'bg-amber-50 border-amber-600 text-amber-900 font-semibold'
-                  : 'border-stone-200 text-stone-600 hover:bg-stone-50'
+                  ? 'bg-stone-100 font-semibold text-stone-900'
+                  : 'hover:bg-stone-50 text-stone-600'
               }`}
             >
-              {conc}
-            </button>
+              <span>{conc}</span>
+              {selectedConcentration === conc && <span className="text-stone-900 font-bold">✓</span>}
+            </label>
           ))}
         </div>
       </div>
 
       {/* Price Range */}
       <div className="space-y-2">
-        <div className="flex justify-between items-center text-[11px] font-semibold text-stone-700 uppercase tracking-widest">
+        <div className="flex justify-between items-center text-[11px] font-semibold text-stone-800 uppercase tracking-wider">
           <span>Max Price</span>
-          <span className="text-amber-800 font-serif font-bold text-sm">${priceRange}</span>
+          <span className="font-serif font-bold text-stone-900 text-sm">${priceRange}</span>
         </div>
         <input
           type="range"
@@ -132,24 +126,24 @@ const FilterPanel = ({
           max="500"
           value={priceRange}
           onChange={(e) => setPriceRange(Number(e.target.value))}
-          className="w-full accent-amber-800 cursor-pointer"
+          className="w-full accent-stone-900 cursor-pointer"
         />
       </div>
 
-      {/* Specific Scent Notes */}
+      {/* Scent Notes */}
       <div className="space-y-2">
-        <label className="text-[11px] font-semibold text-stone-700 uppercase tracking-widest">Key Scent Notes</label>
-        <div className="grid grid-cols-2 gap-2">
+        <label className="text-[11px] font-semibold text-stone-800 uppercase tracking-wider block">Scent Notes</label>
+        <div className="grid grid-cols-2 gap-2 pt-1">
           {popularNotes.map((note) => (
             <label
               key={note}
-              className="flex items-center gap-2 text-xs text-stone-600 cursor-pointer select-none hover:text-stone-900"
+              className="flex items-center gap-2 text-xs text-stone-600 cursor-pointer hover:text-stone-900"
             >
               <input
                 type="checkbox"
                 checked={selectedNotes.includes(note)}
                 onChange={() => toggleNote(note)}
-                className="w-3.5 h-3.5 rounded text-amber-800 border-stone-300 focus:ring-amber-700"
+                className="w-3.5 h-3.5 rounded text-stone-900 border-stone-300 focus:ring-stone-900"
               />
               <span>{note}</span>
             </label>
@@ -161,7 +155,7 @@ const FilterPanel = ({
       <button
         onClick={handleApply}
         type="button"
-        className="w-full py-3 bg-stone-900 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-widest rounded-md transition-colors shadow-sm"
+        className="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
       >
         Apply Filters
       </button>
@@ -170,3 +164,4 @@ const FilterPanel = ({
 };
 
 export default FilterPanel;
+

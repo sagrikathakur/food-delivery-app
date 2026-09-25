@@ -2,23 +2,23 @@ import React from 'react';
 
 const About = () => {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-16">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-16">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3">
+      <div className="text-center max-w-2xl mx-auto space-y-2">
         <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-          Our Atelier & Philosophy
+          About Us
         </span>
-        <h1 className="text-3xl sm:text-5xl font-serif text-stone-900 font-bold">
-          Crafting Fine Fragrance Since 2020
+        <h1 className="text-3xl sm:text-4xl font-serif text-stone-900 font-bold">
+          Crafting Fine Fragrance
         </h1>
         <p className="text-stone-600 text-sm font-light leading-relaxed">
-          Inspired by coastal breezes and wild botanical gardens, Ocean Parfums blends pure floral absolutes and natural resins.
+          Inspired by coastal breezes and wildflower gardens, Ocean Parfums blends pure floral absolutes and natural resins.
         </p>
       </div>
 
       {/* Story Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div className="relative rounded-2xl overflow-hidden shadow-lg h-96">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="relative rounded-xl overflow-hidden border border-stone-200 shadow-xs h-80">
           <img
             src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=800"
             alt="Perfume Bottling Process"
@@ -26,25 +26,25 @@ const About = () => {
           />
         </div>
 
-        <div className="space-y-6">
-          <span className="text-[11px] uppercase tracking-widest text-amber-800 font-semibold">Slow Perfumery</span>
+        <div className="space-y-4">
+          <span className="text-[11px] uppercase tracking-widest text-amber-800 font-semibold">Our Process</span>
           <h2 className="text-2xl font-serif text-stone-900 font-bold">
-            Distilled in Small Batches with Uncompromising Craft
+            Distilled in Small Batches
           </h2>
           <p className="text-stone-600 text-xs sm:text-sm font-light leading-relaxed">
-            We reject mass synthetic fragrances. Every bottle is hand-poured, aged in French oak vessels for 30 days to allow scent notes to harmonize, and hand-numbered by our master perfumer.
+            Every bottle is hand-poured in small batches, allowed to mature for 30 days to harmonize scent notes, and carefully packaged before reaching your home.
           </p>
           <div className="grid grid-cols-3 gap-4 pt-4 border-t border-stone-200">
             <div>
-              <span className="block text-2xl font-serif font-bold text-amber-900">100%</span>
+              <span className="block text-xl font-serif font-bold text-stone-900">100%</span>
               <span className="text-[11px] text-stone-500">Cruelty Free & Vegan</span>
             </div>
             <div>
-              <span className="block text-2xl font-serif font-bold text-amber-900">30 Days</span>
-              <span className="text-[11px] text-stone-500">Oak Maceration</span>
+              <span className="block text-xl font-serif font-bold text-stone-900">30 Days</span>
+              <span className="text-[11px] text-stone-500">Scent Maceration</span>
             </div>
             <div>
-              <span className="block text-2xl font-serif font-bold text-amber-900">Rare</span>
+              <span className="block text-xl font-serif font-bold text-stone-900">Natural</span>
               <span className="text-[11px] text-stone-500">Botanical Oils</span>
             </div>
           </div>
@@ -52,18 +52,19 @@ const About = () => {
       </div>
 
       {/* Contact & Location Box */}
-      <div className="bg-stone-900 text-white rounded-2xl p-8 sm:p-12 text-center space-y-4">
-        <span className="text-xs uppercase tracking-widest text-amber-300 font-semibold">Visit Our Atelier</span>
-        <h3 className="text-2xl font-serif font-bold">Ocean Parfums Boutique</h3>
+      <div className="bg-stone-900 text-white rounded-xl p-8 sm:p-10 text-center space-y-3">
+        <span className="text-xs uppercase tracking-widest text-amber-300 font-semibold">Visit Our Store</span>
+        <h3 className="text-xl font-serif font-bold text-stone-100">Ocean Parfums Boutique</h3>
         <p className="text-stone-300 text-xs max-w-lg mx-auto font-light leading-relaxed">
           742 Evergreen Terrace, Suite 12, Beverly Hills, CA 90210
           <br />
-          Open Tuesday – Sunday: 10:00 AM – 7:00 PM
+          Tuesday – Sunday: 10:00 AM – 7:00 PM
         </p>
-        <p className="text-amber-300 font-mono text-xs pt-2">concierge@oceanparfums.com • +1 (800) 463-3339</p>
+        <p className="text-stone-400 text-xs pt-1">contact@oceanparfums.com • +1 (800) 463-3339</p>
       </div>
     </div>
   );
 };
 
 export default About;
+

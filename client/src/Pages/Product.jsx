@@ -40,8 +40,8 @@ const Product = ({
     : ['Bergamot', 'Damask Rose', 'Warm Ambergris'];
 
   const topNote = notesArray[0] || 'Calabrian Bergamot';
-  const heartNote = notesArray[1] || 'Damask Rose & Wild Iris';
-  const baseNote = notesArray[2] || 'Aged Patchouli & Amber';
+  const heartNote = notesArray[1] || 'Damask Rose & Iris';
+  const baseNote = notesArray[2] || 'Patchouli & Amber';
 
   // Filter 3 related products excluding current product
   const relatedProducts = perfumes_list
@@ -49,20 +49,20 @@ const Product = ({
     .slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-16">
       {/* Breadcrumbs & Navigation */}
-      <div className="flex items-center justify-between border-b border-stone-200/80 pb-4">
+      <div className="flex items-center justify-between border-b border-stone-200 pb-4">
         <nav className="flex items-center gap-2 text-xs text-stone-500 font-light">
           <button
             onClick={() => onNavigate && onNavigate('home')}
-            className="hover:text-amber-900 transition-colors cursor-pointer"
+            className="hover:text-stone-900 transition-colors cursor-pointer"
           >
             Home
           </button>
           <span>/</span>
           <button
             onClick={() => onNavigate && onNavigate('fragrances')}
-            className="hover:text-amber-900 transition-colors cursor-pointer"
+            className="hover:text-stone-900 transition-colors cursor-pointer"
           >
             Fragrances
           </button>
@@ -72,7 +72,7 @@ const Product = ({
 
         <button
           onClick={() => onNavigate && onNavigate('fragrances')}
-          className="text-xs text-amber-900 font-medium hover:underline flex items-center gap-1 cursor-pointer"
+          className="text-xs text-stone-600 hover:text-stone-900 font-medium flex items-center gap-1 cursor-pointer"
         >
           ← Back to Catalog
         </button>
@@ -82,39 +82,34 @@ const Product = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Column: Media Showcase */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="relative rounded-3xl bg-stone-100 border border-stone-200/90 overflow-hidden shadow-xl p-8 flex items-center justify-center min-h-[420px]">
+          <div className="relative rounded-2xl bg-stone-50 border border-stone-200 overflow-hidden p-8 flex items-center justify-center min-h-[400px]">
             <img
               src={currentProduct.image}
               alt={currentProduct.name}
-              className="max-h-[380px] w-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+              className="max-h-[360px] w-auto object-contain"
             />
 
             {/* Tag Badge */}
             {currentProduct.tag && (
-              <span className="absolute top-4 left-4 bg-stone-900 text-white text-[11px] uppercase tracking-widest px-3.5 py-1 rounded-full shadow-md">
+              <span className="absolute top-4 left-4 bg-stone-900 text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded">
                 {currentProduct.tag}
               </span>
             )}
-
-            {/* Quality Seal */}
-            <span className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md text-stone-800 text-[11px] font-serif font-bold px-3 py-1.5 rounded-xl border border-stone-200 shadow-sm flex items-center gap-1.5">
-              <span>✨</span> Pure Extrait
-            </span>
           </div>
 
           {/* Guarantee Pill Badges */}
           <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-xs">
-              <span className="text-lg block">🌿</span>
-              <span className="text-[11px] text-stone-700 font-medium block mt-1">100% Organic</span>
+            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-subtle">
+              <span className="text-xs font-semibold text-stone-800 block">Organic</span>
+              <span className="text-[10px] text-stone-500 block mt-0.5">Botanical Oils</span>
             </div>
-            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-xs">
-              <span className="text-lg block">🧪</span>
-              <span className="text-[11px] text-stone-700 font-medium block mt-1">Small Batch</span>
+            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-subtle">
+              <span className="text-xs font-semibold text-stone-800 block">Small Batch</span>
+              <span className="text-[10px] text-stone-500 block mt-0.5">Hand-Blended</span>
             </div>
-            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-xs">
-              <span className="text-lg block">🐰</span>
-              <span className="text-[11px] text-stone-700 font-medium block mt-1">Cruelty Free</span>
+            <div className="bg-white border border-stone-200 p-3 rounded-xl shadow-subtle">
+              <span className="text-xs font-semibold text-stone-800 block">Cruelty Free</span>
+              <span className="text-[10px] text-stone-500 block mt-0.5">100% Vegan</span>
             </div>
           </div>
         </div>
@@ -122,19 +117,16 @@ const Product = ({
         {/* Right Column: Product Information & Purchase */}
         <div className="lg:col-span-6 space-y-6">
           <div className="space-y-2">
-            <span className="text-xs uppercase tracking-widest font-semibold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200/60 inline-block">
-              {currentProduct.concentration || 'Eau de Parfum'} • {currentProduct.category || currentProduct.family || 'Artisanal'}
+            <span className="text-xs uppercase tracking-widest font-semibold text-amber-800 bg-stone-100 px-2.5 py-1 rounded inline-block">
+              {currentProduct.concentration || 'Eau de Parfum'} • {currentProduct.category || currentProduct.family || 'Fragrance'}
             </span>
 
             <h1 className="text-3xl sm:text-4xl font-serif text-stone-900 font-bold tracking-tight">
               {currentProduct.name}
             </h1>
 
-            <div className="flex items-center gap-3 pt-1">
-              <div className="flex text-amber-500 text-sm">★★★★★</div>
-              <span className="text-xs text-stone-600 font-medium">
-                {currentProduct.rating || 4.9} / 5.0
-              </span>
+            <div className="flex items-center gap-2 pt-1">
+              <span className="text-xs text-amber-600 font-medium">★ {currentProduct.rating || 4.9}</span>
               <span className="text-xs text-stone-400">•</span>
               <span className="text-xs text-stone-500 font-light">
                 {currentProduct.reviewsCount || 84} verified reviews
@@ -143,20 +135,20 @@ const Product = ({
           </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-4 border-y border-stone-200/80 py-4">
+          <div className="flex items-baseline gap-4 border-y border-stone-200 py-4">
             <span className="text-3xl font-serif font-bold text-stone-900">${price.toFixed(2)}</span>
-            <span className="text-xs text-stone-500 font-light">Tax included. Free express shipping applied at checkout.</span>
+            <span className="text-xs text-stone-500 font-light">Taxes included. Free shipping on orders over $50.</span>
           </div>
 
           {/* Description */}
           <p className="text-stone-600 text-sm font-light leading-relaxed">
-            {currentProduct.description || 'Crafted in small batches with cold-pressed botanical oils, rare flower extracts, and aged amber resin. Designed for long-lasting sillage and timeless elegance.'}
+            {currentProduct.description || 'Crafted in small batches with cold-pressed botanical oils, flower extracts, and amber resin. Formulated for long-lasting wear.'}
           </p>
 
           {/* Size Options */}
           <div className="space-y-2">
             <label className="text-xs uppercase tracking-wider font-semibold text-stone-800 block">
-              Select Bottle Volume:
+              Bottle Size:
             </label>
             <div className="flex gap-3">
               {['50 ml / 1.7 fl. oz.', '100 ml / 3.4 fl. oz.'].map((size) => (
@@ -164,9 +156,9 @@ const Product = ({
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   type="button"
-                  className={`px-4 py-2.5 text-xs font-medium rounded-xl border transition-all cursor-pointer ${
+                  className={`px-4 py-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                     selectedSize === size
-                      ? 'bg-amber-900 text-white border-amber-900 shadow-sm'
+                      ? 'bg-stone-900 text-white border-stone-900'
                       : 'bg-white border-stone-300 text-stone-700 hover:border-stone-400'
                   }`}
                 >
@@ -176,74 +168,74 @@ const Product = ({
             </div>
           </div>
 
-          {/* Olfactory Pyramid Accordion / Tabs */}
-          <div className="bg-stone-50 rounded-2xl border border-stone-200 p-5 space-y-4">
+          {/* Fragrance Notes / Details Tabs */}
+          <div className="bg-stone-50 rounded-xl border border-stone-200 p-5 space-y-4">
             <div className="flex border-b border-stone-200 text-xs font-medium">
               <button
                 onClick={() => setActiveTab('notes')}
                 className={`pb-2 pr-4 border-b-2 transition-colors ${
-                  activeTab === 'notes' ? 'border-amber-900 text-amber-900 font-semibold' : 'border-transparent text-stone-500'
+                  activeTab === 'notes' ? 'border-stone-900 text-stone-900 font-semibold' : 'border-transparent text-stone-500'
                 }`}
               >
-                🌸 Fragrance Notes
+                Fragrance Notes
               </button>
               <button
                 onClick={() => setActiveTab('longevity')}
                 className={`pb-2 px-4 border-b-2 transition-colors ${
-                  activeTab === 'longevity' ? 'border-amber-900 text-amber-900 font-semibold' : 'border-transparent text-stone-500'
+                  activeTab === 'longevity' ? 'border-stone-900 text-stone-900 font-semibold' : 'border-transparent text-stone-500'
                 }`}
               >
-                ⏱️ Sillage & Wear
+                Wear & Sillage
               </button>
             </div>
 
             {activeTab === 'notes' ? (
               <div className="grid grid-cols-3 gap-3 text-center pt-1">
-                <div className="bg-white p-3 rounded-xl border border-stone-200/80">
+                <div className="bg-white p-3 rounded-lg border border-stone-200">
                   <span className="text-[10px] uppercase font-bold text-amber-800 block">Top Notes</span>
-                  <span className="text-xs text-stone-800 font-serif mt-1 block">{topNote}</span>
+                  <span className="text-xs text-stone-800 font-medium mt-1 block">{topNote}</span>
                 </div>
-                <div className="bg-white p-3 rounded-xl border border-stone-200/80">
+                <div className="bg-white p-3 rounded-lg border border-stone-200">
                   <span className="text-[10px] uppercase font-bold text-amber-800 block">Heart Notes</span>
-                  <span className="text-xs text-stone-800 font-serif mt-1 block">{heartNote}</span>
+                  <span className="text-xs text-stone-800 font-medium mt-1 block">{heartNote}</span>
                 </div>
-                <div className="bg-white p-3 rounded-xl border border-stone-200/80">
+                <div className="bg-white p-3 rounded-lg border border-stone-200">
                   <span className="text-[10px] uppercase font-bold text-amber-800 block">Base Notes</span>
-                  <span className="text-xs text-stone-800 font-serif mt-1 block">{baseNote}</span>
+                  <span className="text-xs text-stone-800 font-medium mt-1 block">{baseNote}</span>
                 </div>
               </div>
             ) : (
               <div className="space-y-2 text-xs text-stone-600 font-light pt-1">
                 <div className="flex justify-between">
                   <span>Longevity:</span>
-                  <span className="font-medium text-stone-900">10 - 12 Hours (Extrait Grade)</span>
+                  <span className="font-medium text-stone-900">8 - 10 Hours</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Projection / Sillage:</span>
-                  <span className="font-medium text-stone-900">Moderate to Intimate Radiance</span>
+                  <span>Sillage:</span>
+                  <span className="font-medium text-stone-900">Moderate & Balanced</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Best Season:</span>
-                  <span className="font-medium text-stone-900">All Seasons / Versatile Signature</span>
+                  <span className="font-medium text-stone-900">All Year Round</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Quantity & Add To Cart Form */}
+          {/* Quantity & Add To Bag */}
           <div className="space-y-4 pt-2">
             <div className="flex items-center gap-4">
-              <div className="flex items-center border border-stone-300 rounded-xl bg-white overflow-hidden">
+              <div className="flex items-center border border-stone-300 rounded-lg bg-white overflow-hidden">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-2.5 text-stone-600 hover:bg-stone-100 font-bold transition-colors cursor-pointer"
+                  className="px-3 py-2 text-stone-600 hover:bg-stone-100 font-bold transition-colors cursor-pointer"
                 >
                   -
                 </button>
                 <span className="px-4 py-2 text-xs font-semibold text-stone-900">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-2.5 text-stone-600 hover:bg-stone-100 font-bold transition-colors cursor-pointer"
+                  className="px-3 py-2 text-stone-600 hover:bg-stone-100 font-bold transition-colors cursor-pointer"
                 >
                   +
                 </button>
@@ -258,13 +250,13 @@ const Product = ({
               <button
                 onClick={handleAdd}
                 type="button"
-                className={`flex-1 py-4 px-6 text-xs font-medium uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`flex-1 py-3.5 px-6 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
                   added
-                    ? 'bg-emerald-700 text-white'
-                    : 'bg-stone-900 hover:bg-amber-900 text-white'
+                    ? 'bg-stone-800 text-white'
+                    : 'bg-stone-900 hover:bg-stone-800 text-white'
                 }`}
               >
-                {added ? '✓ Added to Shopping Bag' : 'Add to Shopping Bag'}
+                {added ? 'Added to Bag' : 'Add to Bag'}
               </button>
 
               <button
@@ -273,9 +265,9 @@ const Product = ({
                   if (onNavigate) onNavigate('checkout');
                 }}
                 type="button"
-                className="py-4 px-6 bg-amber-800 hover:bg-amber-700 text-white text-xs font-medium uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer"
+                className="py-3.5 px-6 border border-stone-300 hover:bg-stone-50 text-stone-900 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
               >
-                Instant Checkout
+                Buy Now
               </button>
             </div>
           </div>
@@ -283,27 +275,27 @@ const Product = ({
           {/* Perks */}
           <div className="space-y-2 text-xs text-stone-600 font-light pt-2 border-t border-stone-200">
             <div className="flex items-center gap-2">
-              <span className="text-amber-700">✓</span>
-              <span><strong>Free Sample Vial:</strong> Each bottle comes with a complimentary 2ml sample to test before opening.</span>
+              <span className="text-stone-900 font-bold">✓</span>
+              <span><strong>Sample Vial:</strong> Includes a 2ml sample to test before opening your bottle.</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-amber-700">✓</span>
-              <span><strong>30-Day Guarantee:</strong> Easy returns within 30 days if not completely delighted.</span>
+              <span className="text-stone-900 font-bold">✓</span>
+              <span><strong>30-Day Returns:</strong> Easy 30-day return policy if unopened.</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Related Products Recommendation Carousel */}
-      <div className="space-y-6 border-t border-stone-200/80 pt-12">
+      {/* Related Products */}
+      <div className="space-y-6 border-t border-stone-200 pt-12">
         <div className="flex justify-between items-end">
           <div>
-            <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">You May Also Enjoy</span>
-            <h2 className="text-2xl font-serif text-stone-900 font-bold mt-1">Recommended Fragrances</h2>
+            <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">Recommendations</span>
+            <h2 className="text-2xl font-serif text-stone-900 font-bold mt-1">You May Also Like</h2>
           </div>
           <button
             onClick={() => onNavigate && onNavigate('fragrances')}
-            className="text-xs text-amber-900 font-medium hover:underline cursor-pointer"
+            className="text-xs text-stone-700 hover:text-stone-900 font-medium hover:underline cursor-pointer"
           >
             View All Fragrances →
           </button>
@@ -325,3 +317,4 @@ const Product = ({
 };
 
 export default Product;
+

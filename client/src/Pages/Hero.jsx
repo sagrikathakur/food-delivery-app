@@ -3,47 +3,43 @@ import perfumeHeroImg from '../assets/Perfume and Wildflowers.png'
 
 const Hero = ({ onOpenAuthModal, onNavigate }) => {
   return (
-    <section className="relative w-full h-[90vh] min-h-[550px] overflow-hidden flex items-center justify-center text-white">
-      {/* Background Image spanning 100% width and height */}
+    <section className="relative w-full h-screen min-h-screen overflow-hidden flex items-center justify-center text-white">
+      {/* Background Image */}
       <img
         src={perfumeHeroImg}
-        alt="Luxury Perfume"
+        alt="Natural Perfume"
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
       {/* Subtle overlay tint to ensure text legibility */}
-      <div className="absolute inset-0 bg-stone-950/35" />
+      <div className="absolute inset-0 bg-stone-950/40" />
 
-      {/* Text Content Overlay Directly ON TOP of Image with padding for absolute header */}
-      <div className="relative z-10 max-w-3xl mx-auto px-6 pt-20 text-center space-y-4">
-        {/* Subheading */}
-        <p className="text-xs font-medium uppercase tracking-widest text-stone-200">
-          Handcrafted Fragrances • 2026 Collection
+      {/* Text Content Overlay */}
+      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center space-y-5 pt-12">
+        <p className="text-xs font-medium uppercase tracking-widest text-amber-200">
+          Hand-Blended Botanical Fragrances
         </p>
 
-        {/* Heading */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-tight">
-          Natural perfumes, distilled with rare botanical blooms.
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif text-white tracking-tight leading-tight">
+          Crafted by hand. Distilled for elegance.
         </h1>
 
-        {/* Small Paragraph */}
-        <p className="text-stone-200 text-sm sm:text-base font-light leading-relaxed max-w-xl mx-auto">
-          Hand-blended in small batches using organic floral extracts, warm amber, and botanical oils.
+        <p className="text-stone-200 text-sm sm:text-lg font-light leading-relaxed max-w-xl mx-auto">
+          Natural perfumes made in small batches with organic floral extracts, warm amber notes, and botanical oils.
         </p>
 
-        {/* Buttons */}
-        <div className="pt-3 flex justify-center items-center gap-4">
+        <div className="pt-4 flex justify-center items-center gap-4">
           <button
             onClick={() => onNavigate && onNavigate('fragrances')}
-            className="px-8 py-3.5 bg-white hover:bg-stone-100 text-stone-900 text-xs font-medium uppercase tracking-widest transition-colors rounded-md shadow-sm cursor-pointer"
+            className="px-8 py-3.5 bg-white hover:bg-stone-100 text-stone-900 text-xs font-semibold uppercase tracking-wider transition-colors rounded-lg shadow-sm cursor-pointer"
           >
-            Explore Fragrances
+            Shop Collection
           </button>
           <button
             onClick={() => onNavigate && onNavigate('collections')}
-            className="px-8 py-3.5 bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-xs text-xs font-medium uppercase tracking-widest transition-colors rounded-md cursor-pointer"
+            className="px-8 py-3.5 bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-xs text-xs font-semibold uppercase tracking-wider transition-colors rounded-lg cursor-pointer"
           >
-            Collections
+            Explore Fragrances
           </button>
         </div>
       </div>
@@ -52,3 +48,5 @@ const Hero = ({ onOpenAuthModal, onNavigate }) => {
 }
 
 export default Hero
+
+

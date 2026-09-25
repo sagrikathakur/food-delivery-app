@@ -106,7 +106,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
               Ocean Parfums
             </span>
             <h3 className="font-serif text-lg font-light leading-snug">
-              Discover your signature fragrance.
+              Sign in to manage your account and orders.
             </h3>
           </div>
         </div>
@@ -116,16 +116,16 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialToken = '' }
           <div>
             <div className="mb-5">
               <h2 className="text-xl font-serif font-bold text-stone-900 tracking-tight">
-                {mode === 'login' && 'Welcome Back'}
+                {mode === 'login' && 'Sign in'}
                 {mode === 'register' && 'Create Account'}
                 {mode === 'forgot' && 'Reset Password'}
                 {mode === 'reset' && 'Set New Password'}
               </h2>
               <p className="text-xs text-stone-500 mt-1 font-light">
-                {mode === 'login' && 'Sign in to access your luxury fragrance collection.'}
-                {mode === 'register' && 'Join Ocean Parfums for exclusive boutique offers.'}
-                {mode === 'forgot' && 'Enter your email to receive reset instructions.'}
-                {mode === 'reset' && 'Enter your reset token and choose a new password.'}
+                {mode === 'login' && 'Enter your email and password to log in.'}
+                {mode === 'register' && 'Enter your information to create an account.'}
+                {mode === 'forgot' && 'Enter your email to receive password reset instructions.'}
+                {mode === 'reset' && 'Enter your reset token and new password.'}
               </p>
             </div>
 

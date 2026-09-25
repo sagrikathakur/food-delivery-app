@@ -58,30 +58,30 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
             }`}
           >
             <a
-              href="#fragrances"
+              href="/fragrances"
               onClick={(e) => {
                 e.preventDefault();
-                if (onNavigate) onNavigate('fragrances');
+                if (onNavigate) onNavigate('/fragrances');
               }}
               className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
               Fragrances
             </a>
             <a
-              href="#collections"
+              href="/collections"
               onClick={(e) => {
                 e.preventDefault();
-                if (onNavigate) onNavigate('collections');
+                if (onNavigate) onNavigate('/collections');
               }}
               className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
               Collections
             </a>
             <a
-              href="#about"
+              href="/about"
               onClick={(e) => {
                 e.preventDefault();
-                if (onNavigate) onNavigate('about');
+                if (onNavigate) onNavigate('/about');
               }}
               className={`transition-colors ${isTransparent ? 'hover:text-white' : 'hover:text-amber-800'}`}
             >
@@ -89,10 +89,10 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
             </a>
             {user?.role === 'admin' && (
               <a
-                href="#admin"
+                href="/admin"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (onNavigate) onNavigate('admin');
+                  if (onNavigate) onNavigate('/admin');
                 }}
                 className={`transition-colors font-bold ${isTransparent ? 'text-amber-300 hover:text-white' : 'text-amber-800 hover:text-stone-900'}`}
               >
@@ -126,7 +126,7 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
             {user ? (
               <div className={`flex items-center gap-3 pl-3 border-l ${isTransparent ? 'border-white/20' : 'border-stone-200'}`}>
                 <button
-                  onClick={() => onNavigate && onNavigate('profile')}
+                  onClick={() => onNavigate && onNavigate('/profile')}
                   className={`w-8 h-8 rounded-full font-serif font-bold text-xs flex items-center justify-center border hover:scale-105 transition-all ${
                     isTransparent
                       ? 'bg-white/20 text-white border-white/30 backdrop-blur-xs'
@@ -182,22 +182,22 @@ const Navbar = ({ onOpenAuthModal, currentView, onNavigate, cartCount = 0, onOpe
                 : 'border-stone-200 text-stone-700'
             }`}
           >
-            <a href="#fragrances" onClick={() => onNavigate && onNavigate('fragrances')} className="hover:text-amber-300 py-1">
+            <a href="/fragrances" onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate('/fragrances'); }} className="hover:text-amber-300 py-1">
               Fragrances
             </a>
-            <a href="#collections" onClick={() => onNavigate && onNavigate('collections')} className="hover:text-amber-300 py-1">
+            <a href="/collections" onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate('/collections'); }} className="hover:text-amber-300 py-1">
               Collections
             </a>
-            <a href="#about" onClick={() => onNavigate && onNavigate('about')} className="hover:text-amber-300 py-1">
+            <a href="/about" onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate('/about'); }} className="hover:text-amber-300 py-1">
               About Us
             </a>
             {user && (
-              <a href="#profile" onClick={() => onNavigate && onNavigate('profile')} className="hover:text-amber-300 py-1">
+              <a href="/profile" onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate('/profile'); }} className="hover:text-amber-300 py-1">
                 My Profile & Addresses
               </a>
             )}
             {user?.role === 'admin' && (
-              <a href="#admin" onClick={() => onNavigate && onNavigate('admin')} className="hover:text-amber-300 py-1">
+              <a href="/admin" onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate('/admin'); }} className="hover:text-amber-300 py-1">
                 Admin Panel
               </a>
             )}

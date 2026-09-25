@@ -50,17 +50,17 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
     });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-10">
       {/* Header Banner */}
-      <div className="text-center max-w-2xl mx-auto space-y-3">
+      <div className="text-center max-w-2xl mx-auto space-y-2">
         <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-          Artisanal Fragrance Catalog
+          Catalog
         </span>
         <h1 className="text-3xl sm:text-4xl font-serif text-stone-900 font-bold">
-          Explore Our Perfume Editions
+          All Fragrances
         </h1>
         <p className="text-stone-600 text-sm font-light leading-relaxed">
-          Crafted from rare botanical blooms, pure essential oils, and organic alcohol. Find your unique signature scent.
+          Hand-blended perfumes crafted with botanical oils and organic flower extracts.
         </p>
       </div>
 
@@ -76,13 +76,17 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
         {/* Right Main Content: Products Grid */}
         <div className="lg:col-span-3 space-y-8">
           {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-stone-200 p-12 text-center space-y-3">
-              <span className="text-4xl">🌸</span>
-              <h3 className="font-serif text-lg text-stone-800 font-medium">No fragrances match your filters</h3>
+            <div className="bg-white rounded-xl border border-stone-200 p-12 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center mx-auto text-stone-400">
+                <svg className="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+              </div>
+              <h3 className="font-serif text-base text-stone-800 font-semibold">No fragrances match your filters</h3>
               <p className="text-xs text-stone-500 font-light">Try expanding your price range or resetting scent filters.</p>
               <button
                 onClick={handleResetFilters}
-                className="mt-2 px-5 py-2 bg-stone-900 text-white text-xs font-medium uppercase tracking-wider rounded-md"
+                className="mt-2 px-5 py-2 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
               >
                 Reset All Filters
               </button>
@@ -102,9 +106,9 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
 
           {/* Discovery Banner */}
           <Banner
-            title="✨ Fragrance Discovery Set"
-            subtitle="Order any 3 sample vials (2ml) and receive a $30 credit toward your first full-size bottle."
-            actionText="Claim Sample Box"
+            title="Scent Sample Set"
+            subtitle="Select any 3 sample vials (2ml) to test at home before buying full size."
+            actionText="Browse Samples"
           />
         </div>
       </div>
@@ -113,3 +117,4 @@ const Fragrances = ({ onAddToCart, onSelectProduct }) => {
 };
 
 export default Fragrances;
+

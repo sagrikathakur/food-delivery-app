@@ -1,7 +1,7 @@
 import React from 'react';
 import HomeContent from '../components/Home';
 
-const Home = ({ onAddToCart, onSelectProduct, onNavigate }) => {
+const Home = ({ onAddToCart = () => {}, onSelectProduct = () => {}, onNavigate = () => {} }) => {
   return (
     <HomeContent
       onAddToCart={onAddToCart}

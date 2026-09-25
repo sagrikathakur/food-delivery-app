@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children, onOpenAuthModal, title = "Member Access", description = "Please sign in to access this page." }) => {
+const ProtectedRoute = ({ children, allowedRoles, onOpenAuthModal, title = "Member Access", description = "Please sign in to access this page." }) => {
   const { user } = useAuth();
 
   if (!user) {
@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children, onOpenAuthModal, title = "Member Access", de
             </span>
             <h2 className="text-2xl font-serif text-stone-900 font-bold">{title}</h2>
             <p className="text-xs text-stone-500 leading-relaxed font-light">
-              {description} Sign in to your Ocean Parfums account or create a new account to view our fragrances and signature collections.
+              {description} Sign in to your account or create a new account to proceed.
             </p>
           </div>
 
@@ -38,6 +38,17 @@ const ProtectedRoute = ({ children, onOpenAuthModal, title = "Member Access", de
               Register
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (allowedRoles && allowedRoles.length > 0 && user.role && !allowedRoles.includes(user.role)) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-20 bg-stone-50 text-center">
+        <div className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-stone-200/80 space-y-4">
+          <h2 className="text-xl font-bold text-red-600">Access Denied</h2>
+          <p className="text-xs text-stone-600">You do not have permission to view this page.</p>
         </div>
       </div>
     );

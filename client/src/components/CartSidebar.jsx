@@ -89,11 +89,11 @@ const CartSidebar = ({
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-serif text-stone-900 font-semibold">
-                    Your Ocean Parfums Bag is empty
+                  <h3 className="text-lg font-serif text-stone-900 font-semibold">
+                    Your Shopping Bag is empty
                   </h3>
                   <p className="text-xs text-stone-500 font-light max-w-xs mx-auto leading-relaxed">
-                    Explore our handcrafted fragrance collection and discover your signature scent.
+                    Explore our fragrance collection to add scents to your bag.
                   </p>
                 </div>
 
@@ -236,7 +236,7 @@ const CartSidebar = ({
               <button
                 onClick={onCheckout}
                 type="button"
-                className="w-full py-3.5 px-4 bg-amber-800 hover:bg-amber-900 text-white font-medium text-xs uppercase tracking-widest rounded-md transition-all shadow-md active:scale-98 cursor-pointer"
+                className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
               >
                 Proceed to Checkout
               </button>
